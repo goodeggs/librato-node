@@ -1,4 +1,4 @@
-librato-node is a client for Node.js and Librato (http://librato.com/)
+librato-node is a Node.js client for Librato (http://librato.com/)
 
 [![Build Status](https://travis-ci.org/goodeggs/librato-node.png)](https://travis-ci.org/goodeggs/librato-node)
 
@@ -30,6 +30,7 @@ Use `librato.increment` to track counts in librato.  On each flush, the incremen
 librato = require 'librato-node'
 
 librato.increment 'foo'
+```
 
 ### Timing
 
@@ -39,6 +40,7 @@ Use `librato.timing` to track durations in librato.  On each flush, the count, m
 librato = require 'librato-node'
 
 librato.measure 'foo', 500
+```
 
 ### Express
 
@@ -52,7 +54,11 @@ app = express()
 app.use librato.middleware()
 ```
 
-The key names the middleware uses are configurable by passing an options hash with `requestCountKey` and `responseTimeKey` values into `librato.middleware`.
+The key names the middleware uses are configurable by passing an options hash.
+
+``` coffee
+librato.middleware requestCountKey: 'myRequestCount', responseTimeKey: 'myResponseTime'
+```
 
 Contributing
 -------------
