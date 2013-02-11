@@ -1,5 +1,5 @@
 {EventEmitter} = require 'events'
-libratoMetrics = require 'librato-metrics'
+Client = require './client'
 Worker = require './worker'
 Collector = require './collector'
 middleware = require './middleware'
@@ -11,7 +11,7 @@ librato = new EventEmitter()
 librato.configure = (newConfig) ->
   config = newConfig
   collector = new Collector()
-  client = libratoMetrics.createClient config
+  client = new Client config
   worker = new Worker job: librato.flush
   
 librato.increment = (name) ->
@@ -34,7 +34,7 @@ librato.flush = ->
     data =
       gauges: queue
       source: config.source
-    client.post '/metrics', data, (err) ->
+    client.send data, (err) ->
       librato.emit 'error', err if err?
 
 librato.middleware = middleware(librato)

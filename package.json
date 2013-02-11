@@ -15,7 +15,7 @@
   ],
   "dependencies": {
     "d3": "*",
-    "librato-metrics": "*"
+    "request": "*"
   },
   "devDependencies": {
     "coffee-script": "*",
