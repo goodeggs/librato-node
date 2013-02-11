@@ -1,0 +1,31 @@
+{
+  "name": "librato-node",
+  "version": "0.0.1",
+  "description": "A node.js client for Librato (http://librato.com/)",
+  "homepage": "http://goodeggs.github.com/librato-node/",
+  "main": "lib/librato",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/goodeggs/librato-node.git"
+  },
+  "keywords": [
+    "librato",
+    "metrics",
+    "express"
+  ],
+  "dependencies": {
+    "d3": "*",
+    "librato-metrics": "*"
+  },
+  "devDependencies": {
+    "coffee-script": "*",
+    "lodash": "*",
+    "expect.js": "*",
+    "mocha": "*",
+    "sinon": "*"
+  },
+  "scripts": {
+    "pretest": "./node_modules/.bin/coffee -cl -o lib src",
+    "test": "./node_modules/.bin/mocha"
+  }
+}
