@@ -1,4 +1,4 @@
-librato-node is a Node.js client for Librato (http://librato.com/)
+librato-node is a Node.js client for Librato Metrics (http://metrics.librato.com/)
 
 [![Build Status](https://travis-ci.org/goodeggs/librato-node.png)](https://travis-ci.org/goodeggs/librato-node)
 
@@ -68,4 +68,14 @@ $ git clone https://github.com/goodeggs/librato-node && cd librato-node
 $ npm install
 $ npm test
 ```
+
+History
+-------
+
+librato-node is largely based off of Librato's own [librato-rails](https://github.com/librato/librato-rails).  Visit that repository if you're running Ruby or for more information on Librato Metrics in general.
+
+License
+-------
+
+librato-node is released under the [MIT License](http://www.opensource.org/licenses/MIT).
 
