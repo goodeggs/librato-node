@@ -22,7 +22,8 @@
     "lodash": "*",
     "expect.js": "*",
     "mocha": "*",
-    "sinon": "*"
+    "sinon": "*",
+    "replay": "*"
   },
   "scripts": {
     "pretest": "./node_modules/.bin/coffee -cl -o lib src",

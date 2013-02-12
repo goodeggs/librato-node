@@ -1,4 +1,6 @@
 realSinon = require 'sinon'
+replay = require 'replay'
+replay.fixtures = "#{__dirname}/../fixtures"
 expect = require 'expect.js'
 
 GLOBAL.sinon = null

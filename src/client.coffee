@@ -3,7 +3,7 @@ util = require 'util'
 packageJson = require '../package.json'
 
 class Client
-  @endpoint = 'https://metrics-api.librato.com/v1'
+  endpoint: 'https://metrics-api.librato.com/v1'
 
   constructor: ({email, token}) ->
     @_authHeader = 'Basic ' + new Buffer("#{email}:#{token}").toString('base64')
