@@ -7,7 +7,7 @@ class Client
 
   constructor: ({email, token}) ->
     if not email or not token
-      console.warn "[librato-node] metrics disabled: no email or token provided."
+      console.warn "librato-node metrics disabled: no email or token provided."
     else
       @_authHeader = 'Basic ' + new Buffer("#{email}:#{token}").toString('base64')
     
