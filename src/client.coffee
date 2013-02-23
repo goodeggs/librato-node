@@ -6,9 +6,13 @@ class Client
   endpoint: 'https://metrics-api.librato.com/v1'
 
   constructor: ({email, token}) ->
-    @_authHeader = 'Basic ' + new Buffer("#{email}:#{token}").toString('base64')
+    if not email or not token
+      console.warn "[librato-node] metrics disabled: no email or token provided."
+    else
+      @_authHeader = 'Basic ' + new Buffer("#{email}:#{token}").toString('base64')
     
   send: (json, cb) ->
+    return unless @_authHeader
     requestOptions =
       method: 'POST'
       uri: "#{@endpoint}/metrics"
