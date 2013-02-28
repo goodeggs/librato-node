@@ -16,7 +16,7 @@ measureHerokuHeaders = (librato, req) ->
     librato.measure 'heroku.queueWaitTime', val
 
 module.exports = (librato) ->
-  return ({requestCountKey, responseTimeKey, statusCodeKey}={}) ->
+  return ({requestCountKey, responseTimeKey, statusCodeKey, requestWaitTimeKey}={}) ->
     return (req, res, next) ->
       req._libratoStartTime = new Date
 
@@ -30,7 +30,7 @@ module.exports = (librato) ->
       
       # various forwarding proxies add this header
       if req.headers['x-request-start']? and (val = safeParseInt(req.headers['x-request-start']))?
-        librato.measure 'requestWaitTime', (new Date().getTime() - val)
+        librato.measure (requestWaitTimeKey ? 'requestWaitTime'), (new Date().getTime() - val)
       
       measureHerokuHeaders(librato, req) if req.headers['x-heroku-dynos-in-use']?
 

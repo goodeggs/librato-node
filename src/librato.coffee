@@ -16,12 +16,12 @@ librato.configure = (newConfig) ->
   
 librato.increment = (name) ->
   name = sanitize_name(name)
-  collector.increment(name)
+  collector.increment "#{config.prefix ? ''}#{name}"
 
 librato.timing = (name, valueMs) ->
   name = sanitize_name(name)
-  collector.timing(name, valueMs)
-  
+  collector.timing "#{config.prefix ? ''}#{name}", valueMs
+
 librato.measure = librato.timing # alias
     
 librato.start = ->
