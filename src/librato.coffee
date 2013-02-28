@@ -21,6 +21,8 @@ librato.increment = (name) ->
 librato.timing = (name, valueMs) ->
   name = sanitize_name(name)
   collector.timing(name, valueMs)
+  
+librato.measure = librato.timing # alias
     
 librato.start = ->
   worker.start()

@@ -8,7 +8,7 @@ describe 'middleware', ->
   
   beforeEach ->
     sinon.stub(librato)
-    fakeReq = {}
+    fakeReq = {headers: {}}
     fakeRes = {end: (->), statusCode: 200}
     
   describe 'with defaults', ->
@@ -44,4 +44,46 @@ describe 'middleware', ->
           fakeRes.end()
           expect(librato.increment.calledWith('statusCode.2xx')).to.be true
           done()
+          
+    describe 'X-Request-Start header', ->
+      {clock} = {}
+      
+      beforeEach (done) ->
+        clock = sinon.useFakeTimers(new Date().getTime())
+        
+        fakeReq.headers =
+          'x-request-start': new Date().getTime() - 100
+          'x-heroku-queue-depth': '2'
+          'x-heroku-dynos-in-use': '4'
+          'x-heroku-wait-time': '200'
+          
+        middleware fakeReq, fakeRes, ->
+          fakeRes.end()
+          done()
 
+      afterEach ->
+        clock.restore()
+        
+      it 'measures wait time', ->
+        expect(librato.measure.calledWith('requestWaitTime', 100)).to.be true
+
+    describe 'heroku headers', ->
+      beforeEach (done) ->
+        fakeReq.headers =
+          'x-heroku-dynos-in-use': '4'
+          'x-heroku-queue-depth': '2'
+          'x-heroku-queue-wait-time': '200'
+          
+        middleware fakeReq, fakeRes, ->
+          fakeRes.end()
+          done()
+        
+      it 'measures queue depth', ->
+        expect(librato.measure.calledWith('heroku.queueDepth', 2)).to.be true
+        
+      it 'measures queue wait time', ->
+        expect(librato.measure.calledWith('heroku.queueWaitTime', 200)).to.be true
+
+      it 'measures dyno count', ->
+        expect(librato.measure.calledWith('heroku.dynos', 4)).to.be true
+        
