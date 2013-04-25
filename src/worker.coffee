@@ -13,7 +13,7 @@ class Worker
     nextRun = Worker.startTime(@period)
     workFn = =>
       loop
-        now = clock.now()
+        now = Date.now()
         if now >= nextRun
           @job()
           nextRun += @period while nextRun <= now
@@ -28,7 +28,7 @@ class Worker
     
   # Give some structure to worker start times so when possible they will be in sync.
   @startTime: (period) ->
-    earliest = new Date(clock.now() + period)
+    earliest = new Date(Date.now() + period)
     # already on a whole minute
     return earliest.valueOf() if earliest.getSeconds() is 0
     if period > 30
