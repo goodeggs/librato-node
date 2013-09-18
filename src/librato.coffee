@@ -28,13 +28,11 @@ librato.stop = ->
   librato.flush()
     
 librato.flush = ->
-  queue = []
-  collector.flushTo queue
-  if queue.length
-    data =
-      gauges: queue
-      source: config.source
-    client.send data, (err) ->
+  gauges = []
+  collector.flushTo gauges
+  measurement.source = config.source for measurement in gauges
+  if gauges.length
+    client.send {gauges}, (err) ->
       librato.emit 'error', err if err?
 
 librato.middleware = middleware(librato)

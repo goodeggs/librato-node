@@ -4,7 +4,7 @@ Aggregator = require '../lib/aggregator'
 
 describe 'Aggregator', ->
   {aggregator} = {}
-  
+
   beforeEach ->
     aggregator = new Aggregator()
 
@@ -14,47 +14,44 @@ describe 'Aggregator', ->
       aggregator.timing('foobar', 200)
       queue = []
       aggregator.flushTo(queue)
-      expect(queue).to.have.length 4
-      
-      count = _(queue).find (item) -> item.name is 'foobar.count'
-      expect(count.value).to.equal 2
+      expect(queue).to.have.length 1
 
-      min = _(queue).find (item) -> item.name is 'foobar.min'
-      expect(min.value).to.equal 100
-      
-      max = _(queue).find (item) -> item.name is 'foobar.max'
-      expect(max.value).to.equal 200
+      foobar = queue[0]
+      expect(foobar.count).to.equal 2
+      expect(foobar.min).to.equal 100
+      expect(foobar.max).to.equal 200
+      expect(foobar.sum).to.equal 300
+      expect(foobar.sum_squares).to.equal 50000
 
-      mean_90 = _(queue).find (item) -> item.name is 'foobar.mean_90'
-      expect(mean_90.value).to.equal 190
-      
     it 'handles multiple metrics', ->
       aggregator.timing('foo', 100)
       aggregator.timing('bar', 200)
       queue = []
       aggregator.flushTo(queue)
-      expect(queue).to.have.length 8
+      expect(queue).to.have.length 2
 
-      fooCount = _(queue).find (item) -> item.name is 'foo.count'
-      expect(fooCount.value).to.equal 1
+      foo = _(queue).find (item) -> item.name is 'foo'
+      expect(foo.count).to.equal 1
+      expect(foo.min).to.equal 100
+      expect(foo.max).to.equal 100
+      expect(foo.sum).to.equal 100
+      expect(foo.sum_squares).to.equal 10000
 
-      fooMean90 = _(queue).find (item) -> item.name is 'foo.mean_90'
-      expect(fooMean90.value).to.equal 100
-
-      barCount = _(queue).find (item) -> item.name is 'bar.count'
-      expect(barCount.value).to.equal 1
-
-      barMean90 = _(queue).find (item) -> item.name is 'bar.mean_90'
-      expect(barMean90.value).to.equal 200
-      
+      bar = _(queue).find (item) -> item.name is 'bar'
+      expect(bar.count).to.equal 1
+      expect(bar.min).to.equal 200
+      expect(bar.max).to.equal 200
+      expect(bar.sum).to.equal 200
+      expect(bar.sum_squares).to.equal 40000
 
     describe '::flushTo', ->
       it 'clears the internal queue', ->
         aggregator.timing('foo', 100)
+        aggregator.timing('bar', 200)
         queue = []
         aggregator.flushTo queue
-        expect(queue).to.have.length 4
-        
+        expect(queue).to.have.length 2
+
         queue = []
         aggregator.flushTo queue
         expect(queue).to.have.length 0

@@ -27,7 +27,7 @@ describe 'librato', ->
       args = Client::send.getCall(0).args
       names = _(args[0].gauges).pluck('name').value()
       expect(names).to.contain 'foo'
-      expect(names).to.contain 'bar.count'
+      expect(names).to.contain 'bar'
 
     it 'does not post data to Librato if the queue is empty', ->
       librato.flush()
