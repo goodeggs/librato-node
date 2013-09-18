@@ -26,7 +26,7 @@
     "replay": "*"
   },
   "scripts": {
-    "pretest": "./node_modules/.bin/coffee -cl -o lib src",
+    "pretest": "./node_modules/.bin/coffee -c -o lib src",
     "test": "./node_modules/.bin/mocha"
   }
 }
