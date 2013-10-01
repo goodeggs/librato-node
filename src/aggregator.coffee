@@ -7,10 +7,13 @@ class Aggregator
   flushTo: (queue) ->
     for name, values of @cache
       values.sort()
-      queue.push {name: "#{name}.count", value: values.length}
-      queue.push {name: "#{name}.min",   value: d3.min(values)}
-      queue.push {name: "#{name}.max",   value: d3.max(values)}
-      queue.push {name: "#{name}.mean_90", value: d3.quantile(values, 0.9)}
+      queue.push
+        name: name
+        count: values.length
+        sum: d3.sum values
+        max: d3.max values
+        min: d3.min values
+        sum_squares: d3.sum values, (value) -> Math.pow(value, 2)
       delete @cache[name]
     
   timing: (name, value) ->
@@ -18,4 +21,3 @@ class Aggregator
 
     
 module.exports = Aggregator
-

@@ -34,7 +34,9 @@ librato.increment 'foo'
 
 ### Timing
 
-Use `librato.timing` to track durations in librato.  On each flush, the count, max, min and 90th percentile mean for that period will be sent.
+Use `librato.timing` to track durations in librato.
+On each flush, the library sends a `count`, `sum`, `min`, `max`, and `sum_squares` metric for that period
+[so librato can accurately display multi-sample measurements](http://dev.librato.com/v1/post/metrics#gauge_specific).
 
 ``` coffee
 librato = require 'librato-node'
