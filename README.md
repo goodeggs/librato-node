@@ -41,7 +41,7 @@ On each flush, the library sends a `count`, `sum`, `min`, `max`, and `sum_square
 ``` coffee
 librato = require 'librato-node'
 
-librato.measure 'foo', 500
+librato.timing 'foo', 500
 ```
 
 ### Express
