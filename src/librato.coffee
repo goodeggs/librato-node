@@ -30,7 +30,7 @@ librato.stop = ->
 librato.flush = ->
   gauges = []
   collector.flushTo gauges
-  measurement.source = config.source for measurement in gauges
+  measurement.source = config.source for measurement in gauges when not measurement.source?
   if gauges.length
     client.send {gauges}, (err) ->
       librato.emit 'error', err if err?
