@@ -7,7 +7,6 @@ class Aggregator
   flushTo: (queue) ->
     for metric, values of @cache
       [name, source] = metric.split(';')
-      console.log(metric, name, source)
       values.sort()
       obj =
         name: name
