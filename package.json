@@ -15,8 +15,7 @@
   ],
   "dependencies": {
     "d3": "*",
-    "request": "*",
-    "q": "~1.0.1"
+    "request": "*"
   },
   "devDependencies": {
     "coffee-script": "*",
