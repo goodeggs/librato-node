@@ -29,10 +29,12 @@ librato.stop = ->
     
 librato.flush = ->
   gauges = []
+  attributes = aggregate: config.serviceAggregation or false
+  period = 60
   collector.flushTo gauges
   measurement.source = config.source for measurement in gauges
   if gauges.length
-    client.send {gauges}, (err) ->
+    client.send {period, attributes, gauges}, (err) ->
       librato.emit 'error', err if err?
 
 librato.middleware = middleware(librato)
