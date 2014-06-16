@@ -1,6 +1,6 @@
 require './support/test_helper'
 _ = require 'lodash'
-Aggregator = require '../lib/aggregator'
+Aggregator = require '../src/aggregator'
 
 describe 'Aggregator', ->
   {aggregator} = {}
@@ -55,4 +55,3 @@ describe 'Aggregator', ->
         queue = []
         aggregator.flushTo queue
         expect(queue).to.have.length 0
-
