@@ -1,5 +1,5 @@
 require './support/test_helper'
-Client = require '../lib/client'
+Client = require '../src/client'
 
 describe 'Client', ->
   {client} = {}
