@@ -20,6 +20,9 @@ librato.increment = (name) ->
 librato.timing = (name, valueMs) ->
   collector.timing(name, valueMs)
     
+librato.annotation = (stream, title, options={}) ->
+  collector.annotate(stream, title, options)
+
 librato.start = ->
   worker.start()
     
@@ -34,6 +37,13 @@ librato.flush = ->
   if gauges.length
     client.send {gauges}, (err) ->
       librato.emit 'error', err if err?
+  annotations = []
+  collector.flushToAnnotation annotations
+  if annotations.length
+    for a in annotations
+      for v in a.value
+        client.send {annotation: true, name: a.name, body: v}, (err) ->
+          librato.emit 'error', err if err?
 
 librato.middleware = middleware(librato)
 
