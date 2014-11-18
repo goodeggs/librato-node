@@ -15,9 +15,11 @@ librato.configure = (newConfig) ->
   worker = new Worker job: librato.flush
   
 librato.increment = (name) ->
+  name = sanitize_name(name)
   collector.increment(name)
 
 librato.timing = (name, valueMs) ->
+  name = sanitize_name(name)
   collector.timing(name, valueMs)
     
 librato.start = ->
@@ -39,4 +41,9 @@ librato.middleware = middleware(librato)
 
 
 module.exports = librato
+
+# from the official librato statsd backend
+# https://github.com/librato/statsd-librato-backend/blob/dffece631fcdc4c94b2bff1f7526486aa5bfbab9/lib/librato.js#L144
+sanitize_name = (name) ->
+  return name.replace(/[^-.:_\w]+/g, '_').substr(0,255)
 
