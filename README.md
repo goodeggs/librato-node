@@ -13,23 +13,24 @@ Getting Started
 
 Once `librato.start` is called, a worker will send aggregated stats to librato once every 60 seconds.
 
-``` coffee
-librato = require 'librato-node'
-librato.configure email: 'foo@example.com', token: 'ABC123'
-librato.start()
+``` javascript
+var librato = require('librato-node');
+librato.configure({email: 'foo@example.com', token: 'ABC123'});
+librato.start();
 
-process.once 'exit', ->
-  librato.stop()
+process.once('exit', function() {
+  librato.stop();
+});
 ```
 
 ### Increment
 
 Use `librato.increment` to track counts in librato.  On each flush, the incremented total for that period will be sent.
 
-``` coffee
-librato = require 'librato-node'
+``` javascript
+var librato = require('librato-node');
 
-librato.increment 'foo'
+librato.increment('foo');
 ```
 
 ### Timing
@@ -38,28 +39,28 @@ Use `librato.timing` to track durations in librato.
 On each flush, the library sends a `count`, `sum`, `min`, `max`, and `sum_squares` metric for that period
 [so librato can accurately display multi-sample measurements](http://dev.librato.com/v1/post/metrics#gauge_specific).
 
-``` coffee
-librato = require 'librato-node'
+``` javascript
+var librato = require('librato-node');
 
-librato.timing 'foo', 500
+librato.timing('foo', 500);
 ```
 
 ### Express
 
 librato-node includes Express middleware to log the request count and response times for your app.  It also works in other Connect-based apps.
 
-``` coffee
-express = require 'express'
-librato = require 'librato-node'
+``` javascript
+var express = require('express');
+var librato = require('librato-node');
 
-app = express()
-app.use librato.middleware()
+var app = express();
+app.use(librato.middleware());
 ```
 
 The key names the middleware uses are configurable by passing an options hash.
 
-``` coffee
-librato.middleware requestCountKey: 'myRequestCount', responseTimeKey: 'myResponseTime'
+``` javascript
+librato.middleware({requestCountKey: 'myRequestCount', responseTimeKey: 'myResponseTime'});
 ```
 
 Contributing
