@@ -5,16 +5,19 @@ class Aggregator
     @cache = {}
     
   flushTo: (queue) ->
-    for name, values of @cache
+    for metric, values of @cache
+      [name, source] = metric.split(';')
       values.sort()
-      queue.push
+      obj =
         name: name
         count: values.length
         sum: d3.sum values
         max: d3.max values
         min: d3.min values
         sum_squares: d3.sum values, (value) -> Math.pow(value, 2)
-      delete @cache[name]
+      obj.source = source if source?
+      queue.push obj
+      delete @cache[metric]
     
   timing: (name, value) ->
     (@cache[name] ?= []).push value
