@@ -18,7 +18,7 @@
     "request": "*"
   },
   "devDependencies": {
-    "coffee-script": "*",
+    "coffee-script": "1.6.3",
     "lodash": "*",
     "expect.js": "*",
     "mocha": "*",
