@@ -1,4 +1,8 @@
-d3 = require 'd3'
+
+sum = (values) -> values.reduce (a, b) -> a + b
+max = (values) -> values.reduce (a, b) -> Math.max(a, b)
+min = (values) -> values.reduce (a, b) -> Math.min(a, b)
+
 
 class Aggregator
   constructor: ->
@@ -10,10 +14,10 @@ class Aggregator
       queue.push
         name: name
         count: values.length
-        sum: d3.sum values
-        max: d3.max values
-        min: d3.min values
-        sum_squares: d3.sum values, (value) -> Math.pow(value, 2)
+        sum: sum values
+        max: max values
+        min: min values
+        sum_squares: sum values.map (value) -> Math.pow(value, 2)
       delete @cache[name]
     
   timing: (name, value) ->
