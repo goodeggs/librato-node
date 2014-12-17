@@ -14,15 +14,15 @@
     "express"
   ],
   "dependencies": {
-    "request": "*"
+    "request": "2.x.x"
   },
   "devDependencies": {
-    "coffee-script": "1.6.3",
-    "lodash": "*",
-    "expect.js": "*",
-    "mocha": "*",
-    "sinon": "*",
-    "replay": "*"
+    "coffee-script": "^1.8.0",
+    "lodash": "^2.4.1",
+    "expect.js": "^0.3.1",
+    "mocha": "^2.0.1",
+    "sinon": "^1.12.2",
+    "replay": "^1.12.0"
   },
   "scripts": {
     "pretest": "./node_modules/.bin/coffee -c -o lib src",
