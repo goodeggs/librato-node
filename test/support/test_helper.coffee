@@ -1,3 +1,5 @@
+require('source-map-support').install()
+
 realSinon = require 'sinon'
 replay = require 'replay'
 replay.fixtures = "#{__dirname}/../fixtures"

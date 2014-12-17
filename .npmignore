@@ -1,0 +1,7 @@
+.editorconfig
+.git/
+.gitignore
+.travis.yml
+npm-debug.log
+test/
+lib/**/*.js.map
