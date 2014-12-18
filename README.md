@@ -44,6 +44,13 @@ var librato = require('librato-node');
 
 librato.timing('foo', 500);
 ```
+### Service-side aggregation
+
+To enable [service-side aggregation](http://support.metrics.librato.com/knowledgebase/articles/213775-what-is-service-side-aggregation), add to the configure object:
+
+```
+serviceAggregation: true
+```
 
 ### Express
 
