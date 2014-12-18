@@ -13,9 +13,14 @@ class Client
     
   send: (json, cb) ->
     return unless @_authHeader
+    if json.annotation
+      uri = "#{@endpoint}/annotations/#{json.name}"
+      json = json.body
+    else
+      uri = "#{@endpoint}/metrics"
     requestOptions =
       method: 'POST'
-      uri: "#{@endpoint}/metrics"
+      uri:  uri
       json: json
       headers:
         authorization: @_authHeader
@@ -26,7 +31,6 @@ class Client
       if res.statusCode > 399 or body?.errors?
         return cb(new Error("Error sending to Librato: #{util.inspect(body)} (statusCode: #{res.statusCode})"))
       return cb(null, body)
-
     
 module.exports = Client
 

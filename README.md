@@ -45,6 +45,17 @@ var librato = require('librato-node');
 librato.timing('foo', 500);
 ```
 
+### Annotation
+
+Use `librato.annotation` to add an annotation in librato.
+On each flush, the library sends the annotation(s) for that period.
+
+``` coffee
+librato = require 'librato-node'
+
+librato.annotation 'stream', 'title'
+```
+
 ### Express
 
 librato-node includes Express middleware to log the request count and response times for your app.  It also works in other Connect-based apps.
