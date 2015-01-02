@@ -5,9 +5,9 @@ packageJson = require '../package.json'
 class Client
   endpoint: 'https://metrics-api.librato.com/v1'
 
-  constructor: ({email, token}) ->
+  constructor: ({email, token, simulate}) ->
     if not email or not token
-      console.warn "librato-node metrics disabled: no email or token provided."
+      console.warn "librato-node metrics disabled: no email or token provided." unless simulate
     else
       @_authHeader = 'Basic ' + new Buffer("#{email}:#{token}").toString('base64')
     
