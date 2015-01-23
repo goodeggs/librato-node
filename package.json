@@ -1,6 +1,6 @@
 {
   "name": "librato-node",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "A node.js client for Librato Metrics (http://metrics.librato.com/)",
   "homepage": "http://goodeggs.github.com/librato-node/",
   "main": "lib/librato",
