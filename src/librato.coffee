@@ -13,10 +13,10 @@ librato.configure = (newConfig) ->
   collector = new Collector()
   client = new Client config
   worker = new Worker job: librato.flush
-  
-librato.increment = (name) ->
+
+librato.increment = (name, value = 1) ->
   name = sanitize_name(name)
-  collector.increment "#{config.prefix ? ''}#{name}"
+  collector.increment "#{config.prefix ? ''}#{name}", value
 
 librato.timing = (name, valueMs) ->
   name = sanitize_name(name)
