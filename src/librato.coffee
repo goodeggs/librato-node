@@ -27,9 +27,9 @@ librato.measure = librato.timing # alias
 librato.start = ->
   worker.start()
     
-librato.stop = ->
+librato.stop = (cb) ->
   worker.stop()
-  librato.flush()
+  librato.flush(cb)
 
 librato.flush = (cb = ->) ->
   gauges = []
