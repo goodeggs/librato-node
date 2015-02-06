@@ -30,14 +30,16 @@ librato.start = ->
 librato.stop = ->
   worker.stop()
   librato.flush()
-    
-librato.flush = ->
+
+librato.flush = (cb = ->) ->
   gauges = []
   collector.flushTo gauges
   measurement.source = config.source for measurement in gauges
-  if gauges.length
-    client.send {gauges}, (err) ->
-      librato.emit 'error', err if err?
+  return process.nextTick cb unless gauges.length
+
+  client.send {gauges}, (err) ->
+    librato.emit 'error', err if err?
+    cb(err)
 
 librato.middleware = middleware(librato)
 

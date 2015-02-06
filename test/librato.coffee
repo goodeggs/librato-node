@@ -52,13 +52,13 @@ describe 'librato', ->
       args = Client::send.getCall(0).args
       names = _(args[0].gauges).pluck('name').value()
       expect(names).to.contain 'this_is_:a_test_2'
-    
+
   describe '::flush', ->
     beforeEach ->
       librato.increment('foo')
       librato.timing('bar')
       librato.flush()
-      
+
     it 'sends data to Librato', ->
       expect(Client::send.calledOnce).to.be true
       args = Client::send.getCall(0).args
@@ -71,3 +71,13 @@ describe 'librato', ->
       librato.flush()
       expect(Client::send.calledOnce).to.be true
 
+    it 'call callback immediately when queue is empty', (done) ->
+      librato.flush (err) ->
+        expect(Client::send.callCount).to.be 1
+        done(err)
+
+    it 'accepts a callback', (done) ->
+      librato.increment('messages')
+      librato.flush (err) ->
+        expect(Client::send.callCount).to.be 2
+        done(err)
