@@ -22,8 +22,8 @@ var librato = require('librato-node');
 librato.configure({email: 'foo@example.com', token: 'ABC123'});
 librato.start();
 
-process.once('exit', function() {
-  librato.stop();
+process.once('SIGINT', function() {
+  librato.stop(); // stop optionally takes a callback
 });
 ```
 
