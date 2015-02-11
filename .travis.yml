@@ -1,5 +1,15 @@
 language: node_js
 node_js:
   - "0.8"
+
 before_install:
   - npm install -g 'npm@>=1.3.7'
+
+deploy:
+  provider: npm
+  api_key:
+    secure: "CeUn4/OQGcwBoLTYSP7Q8nPuRXsEnd5BaQ09fRXFQ309TWb9KF4uBpSoo+kF3XphIpC9hqx1lnhCc84Ma2WPjkcIO7NCggP8ZmidF9nrBTRtocYsOS4ZYzvr1wKLv29aAO2U1NiGk86VAgriWCgMRRzrTKjuHpp7+uq/9V0Bpz0="
+  on:
+    tags: true
+    all_branches: true
+
