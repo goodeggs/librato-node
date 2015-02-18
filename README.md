@@ -1,9 +1,13 @@
+librato-node
+============
+
 librato-node is a Node.js client for Librato Metrics (http://metrics.librato.com/)
 
-[![Build Status](https://travis-ci.org/goodeggs/librato-node.png)](https://travis-ci.org/goodeggs/librato-node)
+[![Build Status][travis-badge]][travis-link]
+[![npm version][npm-badge]][npm-link]
+[![mit license][license-badge]][license-link]
 
-Getting Started
----------------
+## Getting Started
 
 ### Install
 
@@ -18,8 +22,8 @@ var librato = require('librato-node');
 librato.configure({email: 'foo@example.com', token: 'ABC123'});
 librato.start();
 
-process.once('exit', function() {
-  librato.stop();
+process.once('SIGINT', function() {
+  librato.stop(); // stop optionally takes a callback
 });
 ```
 
@@ -63,8 +67,9 @@ The key names the middleware uses are configurable by passing an options hash.
 librato.middleware({requestCountKey: 'myRequestCount', responseTimeKey: 'myResponseTime'});
 ```
 
-Contributing
--------------
+------
+
+## Contributing
 
 ```
 $ git clone https://github.com/goodeggs/librato-node && cd librato-node
@@ -72,13 +77,23 @@ $ npm install
 $ npm test
 ```
 
-History
--------
+------
+
+## History
 
 librato-node is largely based off of Librato's own [librato-rails](https://github.com/librato/librato-rails).  Visit that repository if you're running Ruby or for more information on Librato Metrics in general.
 
-License
--------
+------
 
-librato-node is released under the [MIT License](http://www.opensource.org/licenses/MIT).
+## License
 
+[MIT][license-link]
+
+[travis-badge]: http://img.shields.io/travis/goodeggs/librato-node/master.svg?style=flat
+[travis-link]: https://travis-ci.org/goodeggs/librato-node
+
+[npm-badge]: http://img.shields.io/npm/v/librato-node.svg?style=flat
+[npm-link]: https://www.npmjs.org/package/librato-node
+
+[license-badge]: http://img.shields.io/badge/license-mit-lightgrey.svg?style=flat
+[license-link]: LICENSE.md
