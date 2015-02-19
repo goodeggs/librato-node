@@ -12,7 +12,7 @@ class Client
       @_authHeader = 'Basic ' + new Buffer("#{email}:#{token}").toString('base64')
     
   send: (json, cb) ->
-    return unless @_authHeader
+    return cb() unless @_authHeader
     requestOptions =
       method: 'POST'
       uri: "#{@endpoint}/metrics"
