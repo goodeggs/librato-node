@@ -1,18 +1,17 @@
-
 class CounterCache
-  
+
   constructor: ->
     @cache = {}
-    
+
   flushTo: (queue) ->
-    for name, value of @cache
-      queue.push {name, value}
-      delete @cache[name]
-    
+    for key, value of @cache
+      [name, source] = key.split ';'
+      queue.push unless source? then {name, value} else {name, value, source}
+      delete @cache[key]
+
   increment: (name, value=1) ->
     @cache[name] ?= 0
     @cache[name] += value
 
 
 module.exports = CounterCache
-

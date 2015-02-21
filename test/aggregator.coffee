@@ -23,6 +23,15 @@ describe 'Aggregator', ->
       expect(foobar.sum).to.equal 300
       expect(foobar.sum_squares).to.equal 50000
 
+    it 'handles metrics with a source', ->
+      aggregator.timing('foobar;source', 100)
+      queue = []
+      aggregator.flushTo(queue)
+      expect(queue).to.have.length 1
+
+      foobar = queue[0]
+      expect(foobar.source).to.equal 'source'
+
     it 'handles multiple metrics', ->
       aggregator.timing('foo', 100)
       aggregator.timing('bar', 200)
@@ -55,4 +64,3 @@ describe 'Aggregator', ->
         queue = []
         aggregator.flushTo queue
         expect(queue).to.have.length 0
-

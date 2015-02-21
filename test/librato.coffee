@@ -41,6 +41,28 @@ describe 'librato', ->
       expect(names).to.contain 'messages'
       expect(values).to.contain 2
 
+    it 'accepts an additional source', ->
+      librato.increment('messages', {source: "source"})
+      librato.flush()
+      expect(Client::send.calledOnce).to.be true
+      args = Client::send.getCall(0).args
+      names = _(args[0].gauges).pluck('name').value()
+      source = _(args[0].gauges).pluck('source').value()
+      values = _(args[0].gauges).pluck('value').value()
+      expect(names).to.contain 'messages'
+      expect(values).to.contain 1
+
+    it 'accepts an additional source when incremented more than 1', ->
+      librato.increment('messages', 2, {source: "source"})
+      librato.flush()
+      expect(Client::send.calledOnce).to.be true
+      args = Client::send.getCall(0).args
+      names = _(args[0].gauges).pluck('name').value()
+      source = _(args[0].gauges).pluck('source').value()
+      values = _(args[0].gauges).pluck('value').value()
+      expect(names).to.contain 'messages'
+      expect(values).to.contain 2
+
   describe '::timing', ->
     it 'does not throw an error', ->
       librato.timing('foobar')

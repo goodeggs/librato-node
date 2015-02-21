@@ -14,19 +14,22 @@ librato.configure = (newConfig) ->
   client = new Client config
   worker = new Worker job: librato.flush
 
-librato.increment = (name, value = 1) ->
-  name = sanitize_name(name)
+librato.increment = (name, value = 1, opts) ->
+  (opts = value; value = 1)  if value is Object(value)
+  name = if opts?.source? then "#{sanitize_name(name)};#{opts.source}"
+  else sanitize_name(name)
   collector.increment "#{config.prefix ? ''}#{name}", value
 
-librato.timing = (name, valueMs) ->
-  name = sanitize_name(name)
+librato.timing = (name, valueMs, opts) ->
+  name = if opts?.source? then "#{sanitize_name(name)};#{opts.source}"
+  else sanitize_name(name)
   collector.timing "#{config.prefix ? ''}#{name}", valueMs
 
 librato.measure = librato.timing # alias
-    
+
 librato.start = ->
   worker.start()
-    
+
 librato.stop = (cb) ->
   worker.stop()
   librato.flush(cb)
@@ -34,7 +37,8 @@ librato.stop = (cb) ->
 librato.flush = (cb = ->) ->
   gauges = []
   collector.flushTo gauges
-  measurement.source = config.source for measurement in gauges
+  for measurement in gauges
+    measurement.source = config.source  unless measurement.source?
   return process.nextTick cb unless gauges.length
 
   client.send {gauges}, (err) ->
@@ -50,4 +54,3 @@ module.exports = librato
 # https://github.com/librato/statsd-librato-backend/blob/dffece631fcdc4c94b2bff1f7526486aa5bfbab9/lib/librato.js#L144
 sanitize_name = (name) ->
   return name.replace(/[^-.:_\w]+/g, '_').substr(0,255)
-

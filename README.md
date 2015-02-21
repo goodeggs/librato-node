@@ -37,6 +37,14 @@ var librato = require('librato-node');
 librato.increment('foo');
 ```
 
+Optionally a source can be specified for the metric.
+
+``` javascript
+var librato = require('librato-node');
+
+librato.increment('foo', {source: 'bar'});
+```
+
 ### Timing
 
 Use `librato.timing` to track durations in librato.
@@ -47,6 +55,14 @@ On each flush, the library sends a `count`, `sum`, `min`, `max`, and `sum_square
 var librato = require('librato-node');
 
 librato.timing('foo', 500);
+```
+
+Optionally a source can be specified for the metric.
+
+``` javascript
+var librato = require('librato-node');
+
+librato.timing('foo', 500, {source: 'bar'});
 ```
 
 ### Express
