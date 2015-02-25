@@ -49,6 +49,18 @@ var librato = require('librato-node');
 librato.timing('foo', 500);
 ```
 
+### Arbitrary measurements
+
+You can also send arbitrary measurements to librato. For example:
+
+``` javascript
+var librato = require('librato-node');
+
+librato.measure('bar', 3829);
+```
+
+(This actually works exactly the same way as `librato.timing`, but sometimes the measurements you are sending aren't time durations!)
+
 ### Express
 
 librato-node includes Express middleware to log the request count and response times for your app.  It also works in other Connect-based apps.
