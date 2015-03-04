@@ -10,14 +10,20 @@ class Aggregator
     
   flushTo: (queue) ->
     for name, values of @cache
-      values.sort()
-      queue.push
-        name: name
-        count: values.length
-        sum: sum values
-        max: max values
-        min: min values
-        sum_squares: sum values.map (value) -> Math.pow(value, 2)
+      if (values.length > 1)
+        values.sort()
+        queue.push
+          name: name
+          count: values.length
+          sum: sum values
+          max: max values
+          min: min values
+          sum_squares: sum values.map (value) -> Math.pow(value, 2)
+      else
+        queue.push
+          name: name
+          value: values[0]
+          
       delete @cache[name]
     
   timing: (name, value) ->
