@@ -31,18 +31,10 @@ describe 'Aggregator', ->
       expect(queue).to.have.length 2
 
       foo = _(queue).find (item) -> item.name is 'foo'
-      expect(foo.count).to.equal 1
-      expect(foo.min).to.equal 100
-      expect(foo.max).to.equal 100
-      expect(foo.sum).to.equal 100
-      expect(foo.sum_squares).to.equal 10000
+      expect(foo.value).to.equal 100
 
       bar = _(queue).find (item) -> item.name is 'bar'
-      expect(bar.count).to.equal 1
-      expect(bar.min).to.equal 200
-      expect(bar.max).to.equal 200
-      expect(bar.sum).to.equal 200
-      expect(bar.sum_squares).to.equal 40000
+      expect(bar.value).to.equal 200
 
     describe '::flushTo', ->
       it 'clears the internal queue', ->

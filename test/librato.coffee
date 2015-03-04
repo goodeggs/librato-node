@@ -17,8 +17,8 @@ describe 'librato', ->
       librato.flush()
       expect(Client::send.calledOnce).to.be true
       args = Client::send.getCall(0).args
-      names = _(args[0].gauges).pluck('name').value()
-      values = _(args[0].gauges).pluck('value').value()
+      names = _(args[0].counters).pluck('name').value()
+      values = _(args[0].counters).pluck('value').value()
       expect(names).to.contain 'this_is_:a_test_'
 
     it 'defaults increment to 1', ->
@@ -26,8 +26,8 @@ describe 'librato', ->
       librato.flush()
       expect(Client::send.calledOnce).to.be true
       args = Client::send.getCall(0).args
-      names = _(args[0].gauges).pluck('name').value()
-      values = _(args[0].gauges).pluck('value').value()
+      names = _(args[0].counters).pluck('name').value()
+      values = _(args[0].counters).pluck('value').value()
       expect(names).to.contain 'messages'
       expect(values).to.contain 1
 
@@ -36,8 +36,8 @@ describe 'librato', ->
       librato.flush()
       expect(Client::send.calledOnce).to.be true
       args = Client::send.getCall(0).args
-      names = _(args[0].gauges).pluck('name').value()
-      values = _(args[0].gauges).pluck('value').value()
+      names = _(args[0].counters).pluck('name').value()
+      values = _(args[0].counters).pluck('value').value()
       expect(names).to.contain 'messages'
       expect(values).to.contain 2
 
@@ -62,8 +62,9 @@ describe 'librato', ->
     it 'sends data to Librato', ->
       expect(Client::send.calledOnce).to.be true
       args = Client::send.getCall(0).args
-      names = _(args[0].gauges).pluck('name').value()
+      names = _(args[0].counters).pluck('name').value()
       expect(names).to.contain 'foo'
+      names = _(args[0].gauges).pluck('name').value()
       expect(names).to.contain 'bar'
 
 
