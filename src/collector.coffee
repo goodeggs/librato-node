@@ -10,8 +10,8 @@ class Collector
   increment: (args...) ->
     @counters.increment(args...)
 
-  timing: (args...) ->
-    @aggregate.timing(args...)
+  measure: (args...) ->
+    @aggregate.measure(args...)
 
   flushTo: (queue) ->
     @counters.flushTo(queue)

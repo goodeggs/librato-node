@@ -15,10 +15,11 @@ librato-node is a Node.js client for Librato Metrics (http://metrics.librato.com
 
 ### Setup
 
-Once `librato.start` is called, a worker will send aggregated stats to librato once every 60 seconds.
+Once `librato.start` is called, a worker will send aggregated stats to Librato once every 60 seconds.
 
 ``` javascript
 var librato = require('librato-node');
+ 
 librato.configure({email: 'foo@example.com', token: 'ABC123'});
 librato.start();
 
@@ -29,37 +30,35 @@ process.once('SIGINT', function() {
 
 ### Increment
 
-Use `librato.increment` to track counts in librato.  On each flush, the incremented total for that period will be sent.
+Use `librato.increment` to track counts in Librato.  On each flush, the incremented total for that period will be sent.
 
 ``` javascript
 var librato = require('librato-node');
 
 librato.increment('foo');
+librato.increment('foo', 2);
+```
+
+### Measurements
+
+You can send arbitrary measurements to Librato using `librato.measure`. These will be sent as gauges. For example:
+
+``` javascript
+var librato = require('librato-node');
+
+librato.measure('member-count', 2001);
+librato.measure('response-time', 500);
 ```
 
 ### Timing
 
-Use `librato.timing` to track durations in librato.
-On each flush, the library sends a `count`, `sum`, `min`, `max`, and `sum_squares` metric for that period
-[so librato can accurately display multi-sample measurements](http://dev.librato.com/v1/post/metrics#gauge_specific).
+Use `librato.timing` to track durations in Librato. For example:
 
 ``` javascript
 var librato = require('librato-node');
 
 librato.timing('foo', 500);
 ```
-
-### Arbitrary measurements
-
-You can also send arbitrary measurements to librato. For example:
-
-``` javascript
-var librato = require('librato-node');
-
-librato.measure('bar', 3829);
-```
-
-(This actually works exactly the same way as `librato.timing`, but sometimes the measurements you are sending aren't time durations!)
 
 ### Express
 
@@ -93,7 +92,7 @@ $ npm test
 
 ## History
 
-librato-node is largely based off of Librato's own [librato-rails](https://github.com/librato/librato-rails).  Visit that repository if you're running Ruby or for more information on Librato Metrics in general.
+librato-node is largely based off of Librato's own [librato-rack](https://github.com/librato/librato-rack).  Visit that repository if you're running Ruby or for more information on Librato Metrics in general.
 
 ------
 

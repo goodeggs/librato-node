@@ -31,10 +31,10 @@ describe 'middleware', ->
         
       it 'measures for each request', (done) ->
         middleware fakeReq, fakeRes, ->
-          expect(librato.timing.calledWith('responseTime')).to.be false
+          expect(librato.measure.calledWith('responseTime')).to.be false
           clock.tick(101)
           fakeRes.end()
-          expect(librato.timing.calledWith('responseTime', 101)).to.be true
+          expect(librato.measure.calledWith('responseTime', 101)).to.be true
           done()
 
     describe 'status code', ->

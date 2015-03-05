@@ -20,7 +20,7 @@ class Aggregator
         sum_squares: sum values.map (value) -> Math.pow(value, 2)
       delete @cache[name]
     
-  timing: (name, value) ->
+  measure: (name, value) ->
     (@cache[name] ?= []).push value
 
     

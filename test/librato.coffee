@@ -41,12 +41,12 @@ describe 'librato', ->
       expect(names).to.contain 'messages'
       expect(values).to.contain 2
 
-  describe '::timing', ->
+  describe '::measure', ->
     it 'does not throw an error', ->
-      librato.timing('foobar')
+      librato.measure('foobar')
 
     it 'translates unsupported metric characters to underscores', ->
-      librato.timing('this/is/:a/(test?!)2')
+      librato.measure('this/is/:a/(test?!)2')
       librato.flush()
       expect(Client::send.calledOnce).to.be true
       args = Client::send.getCall(0).args
@@ -56,7 +56,7 @@ describe 'librato', ->
   describe '::flush', ->
     beforeEach ->
       librato.increment('foo')
-      librato.timing('bar')
+      librato.measure('bar')
       librato.flush()
 
     it 'sends data to Librato', ->

@@ -8,10 +8,10 @@ describe 'Aggregator', ->
   beforeEach ->
     aggregator = new Aggregator()
 
-  describe '::timing', ->
+  describe '::measure', ->
     it 'handles a single metric', ->
-      aggregator.timing('foobar', 100)
-      aggregator.timing('foobar', 200)
+      aggregator.measure('foobar', 100)
+      aggregator.measure('foobar', 200)
       queue = []
       aggregator.flushTo(queue)
       expect(queue).to.have.length 1
@@ -24,8 +24,8 @@ describe 'Aggregator', ->
       expect(foobar.sum_squares).to.equal 50000
 
     it 'handles multiple metrics', ->
-      aggregator.timing('foo', 100)
-      aggregator.timing('bar', 200)
+      aggregator.measure('foo', 100)
+      aggregator.measure('bar', 200)
       queue = []
       aggregator.flushTo(queue)
       expect(queue).to.have.length 2
@@ -46,8 +46,8 @@ describe 'Aggregator', ->
 
     describe '::flushTo', ->
       it 'clears the internal queue', ->
-        aggregator.timing('foo', 100)
-        aggregator.timing('bar', 200)
+        aggregator.measure('foo', 100)
+        aggregator.measure('bar', 200)
         queue = []
         aggregator.flushTo queue
         expect(queue).to.have.length 2
