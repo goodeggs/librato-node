@@ -9,17 +9,6 @@ describe 'librato', ->
     sinon.stub(Client::, 'send').callsArg(1)
 
   describe '::increment', ->
-    it 'does not throw an error', ->
-      librato.increment('foobar')
-
-    it 'translates unsupported metric characters to underscores', ->
-      librato.increment('this/is/:a/(test?!)')
-      librato.flush()
-      expect(Client::send.calledOnce).to.be true
-      args = Client::send.getCall(0).args
-      names = _(args[0].gauges).pluck('name').value()
-      values = _(args[0].gauges).pluck('value').value()
-      expect(names).to.contain 'this_is_:a_test_'
 
     it 'defaults increment to 1', ->
       librato.increment('messages')
@@ -41,12 +30,21 @@ describe 'librato', ->
       expect(names).to.contain 'messages'
       expect(values).to.contain 2
 
+    it 'translates unsupported metric characters to underscores', ->
+      librato.increment('this/is/:a/(test?!)')
+      librato.flush()
+      expect(Client::send.calledOnce).to.be true
+      args = Client::send.getCall(0).args
+      names = _(args[0].gauges).pluck('name').value()
+      values = _(args[0].gauges).pluck('value').value()
+      expect(names).to.contain 'this_is_:a_test_'
+
   describe '::measure', ->
-    it 'does not throw an error', ->
-      librato.measure('foobar')
+    it 'does not throw', ->
+      expect(-> librato.measure('foobar', 1)).not.to.throwError()
 
     it 'translates unsupported metric characters to underscores', ->
-      librato.measure('this/is/:a/(test?!)2')
+      librato.measure('this/is/:a/(test?!)2', 1)
       librato.flush()
       expect(Client::send.calledOnce).to.be true
       args = Client::send.getCall(0).args
@@ -56,7 +54,7 @@ describe 'librato', ->
   describe '::flush', ->
     beforeEach ->
       librato.increment('foo')
-      librato.measure('bar')
+      librato.measure('bar', 1)
       librato.flush()
 
     it 'sends data to Librato', ->

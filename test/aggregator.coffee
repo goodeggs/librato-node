@@ -9,6 +9,13 @@ describe 'Aggregator', ->
     aggregator = new Aggregator()
 
   describe '::measure', ->
+
+    it 'requires a value', ->
+      expect(-> aggregator.measure('foobar')).to.throwError()
+
+    it 'given a value, does not throw', ->
+      expect(-> aggregator.measure('foobar', 1)).not.to.throwError()
+
     it 'handles a single metric', ->
       aggregator.measure('foobar', 100)
       aggregator.measure('foobar', 200)

@@ -18,9 +18,9 @@ librato.increment = (name, value = 1) ->
   name = sanitize_name(name)
   collector.increment "#{config.prefix ? ''}#{name}", value
 
-librato.measure = (name, valueMs) ->
+librato.measure = (name, value) ->
   name = sanitize_name(name)
-  collector.measure "#{config.prefix ? ''}#{name}", valueMs
+  collector.measure "#{config.prefix ? ''}#{name}", value
 
 librato.timing = librato.measure # alias
     

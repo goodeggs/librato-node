@@ -1,3 +1,4 @@
+assert = require 'assert'
 
 sum = (values) -> values.reduce (a, b) -> a + b
 max = (values) -> values.reduce (a, b) -> Math.max(a, b)
@@ -21,6 +22,7 @@ class Aggregator
       delete @cache[name]
     
   measure: (name, value) ->
+    assert value?, 'value is required'
     (@cache[name] ?= []).push value
 
     
