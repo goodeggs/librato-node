@@ -13,6 +13,9 @@ class Collector
   measure: (args...) ->
     @aggregate.measure(args...)
 
+  timing: (args...) ->
+    @aggregate.timing(args...)
+
   flushTo: (queue) ->
     @counters.flushTo(queue)
     @aggregate.flushTo(queue)

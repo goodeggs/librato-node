@@ -8,6 +8,34 @@ describe 'Aggregator', ->
   beforeEach ->
     aggregator = new Aggregator()
 
+  describe '::timing', ->
+    it 'requires a function', ->
+      expect(-> aggregator.timing('foobar')).to.throwError()
+
+    describe 'given a synchronous function (arity 0)', ->
+      {fn, retval} = {}
+
+      beforeEach ->
+        fn = sinon.stub().returns 'foo'
+        sinon.stub(process, 'hrtime').returns([1, 1000000])
+        retval = aggregator.timing 'foobar', fn
+
+      afterEach ->
+        process.hrtime.restore()
+
+      it 'calls the function', ->
+        expect(fn.callCount).to.equal 1
+
+      it "returns the function's return value", ->
+        expect(retval).to.equal 'foo'
+
+      it 'measures the duration', ->
+        queue = []
+        aggregator.flushTo(queue)
+        expect(queue).to.have.length 1
+        expect(queue[0].name).to.equal 'foobar'
+        expect(queue[0].sum).to.equal 1001
+
   describe '::measure', ->
 
     it 'requires a value', ->

@@ -22,7 +22,9 @@ librato.measure = (name, value) ->
   name = sanitize_name(name)
   collector.measure "#{config.prefix ? ''}#{name}", value
 
-librato.timing = librato.measure # alias
+librato.timing = (name, fn) ->
+  name = sanitize_name(name)
+  collector.timing "#{config.prefix ? ''}#{name}", fn
     
 librato.start = ->
   worker.start()

@@ -39,6 +39,11 @@ describe 'librato', ->
       values = _(args[0].gauges).pluck('value').value()
       expect(names).to.contain 'this_is_:a_test_'
 
+  describe '::timing', ->
+    describe 'with a synchronous function', ->
+      it 'does not throw', ->
+        expect(-> librato.timing('foobar', (->))).not.to.throwError()
+
   describe '::measure', ->
     it 'does not throw', ->
       expect(-> librato.measure('foobar', 1)).not.to.throwError()
