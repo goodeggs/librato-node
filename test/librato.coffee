@@ -44,6 +44,10 @@ describe 'librato', ->
       it 'does not throw', ->
         expect(-> librato.timing('foobar', (->))).not.to.throwError()
 
+    describe 'with an asynchronous function', ->
+      it 'does not throw', ->
+        expect(-> librato.timing('foobar', ((cb) ->))).not.to.throwError()
+
   describe '::measure', ->
     it 'does not throw', ->
       expect(-> librato.measure('foobar', 1)).not.to.throwError()

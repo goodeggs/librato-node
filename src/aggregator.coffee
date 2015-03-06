@@ -25,13 +25,21 @@ class Aggregator
     assert value?, 'value is required'
     (@cache[name] ?= []).push value
 
-  timing: (name, fn) ->
+  timing: (name, fn, cb) ->
     assert fn?, 'function is required'
     start = process.hrtime()
-    retval = fn()
-    [sec, usec] = process.hrtime(start)
-    msec = (sec * 1000) + Math.max(usec / 1000 / 1000)
-    (@cache[name] ?= []).push msec
-    return retval
+    done = =>
+      [sec, usec] = process.hrtime(start)
+      msec = (sec * 1000) + Math.max(usec / 1000 / 1000)
+      (@cache[name] ?= []).push msec
+    if fn.length
+      fn (err, retval) ->
+        return cb?(err) if err?
+        done()
+        cb? null, retval
+    else
+      retval = fn()
+      done()
+      return retval
     
 module.exports = Aggregator

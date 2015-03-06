@@ -16,9 +16,35 @@ describe 'Aggregator', ->
       {fn, retval} = {}
 
       beforeEach ->
-        fn = sinon.stub().returns 'foo'
+        fn = sinon.spy(-> 'foo')
         sinon.stub(process, 'hrtime').returns([1, 1000000])
         retval = aggregator.timing 'foobar', fn
+
+      afterEach ->
+        process.hrtime.restore()
+
+      it 'calls the function', ->
+        expect(fn.callCount).to.equal 1
+
+      it "returns the function's return value", ->
+        expect(retval).to.equal 'foo'
+
+      it 'measures the duration', ->
+        queue = []
+        aggregator.flushTo(queue)
+        expect(queue).to.have.length 1
+        expect(queue[0].name).to.equal 'foobar'
+        expect(queue[0].sum).to.equal 1001
+
+    describe 'given an asynchronous function (arity 1)', ->
+      {fn, retval} = {}
+
+      beforeEach (done) ->
+        fn = sinon.spy((cb) -> process.nextTick(-> cb(null, 'foo')))
+        sinon.stub(process, 'hrtime').returns([1, 1000000])
+        aggregator.timing 'foobar', fn, (err, _retval) ->
+          retval = _retval
+          done()
 
       afterEach ->
         process.hrtime.restore()
