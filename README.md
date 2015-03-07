@@ -52,12 +52,31 @@ librato.measure('response-time', 500);
 
 ### Timing
 
-Use `librato.timing` to track durations in Librato. For example:
+Use `librato.timing` to measure durations in Librato. You can pass it a synchronous function or an asynchronous function (it checks the function arity).  For example:
 
 ``` javascript
 var librato = require('librato-node');
 
-librato.timing('foo', 500);
+// synchronous
+librato.timing('foo', function() {
+  for (var i=0; i<50000; i++) console.log(i);
+});
+
+// async without a callback
+librato.timing('foo', function(done) {
+  setTimeout(done, 1000);
+});
+
+// async with a callback
+var workFn = function(done) {
+  setTimeout(function() {
+    done(null, 'foo');
+  });
+};
+var cb = function(err, res) {
+  console.log(res); // => 'foo'
+};
+librato.timing('foo', workFn, cb);
 ```
 
 ### Express
