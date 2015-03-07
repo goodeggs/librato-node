@@ -33,10 +33,9 @@ class Aggregator
       msec = (sec * 1000) + Math.max(usec / 1000 / 1000)
       (@cache[name] ?= []).push msec
     if fn.length
-      fn (err, retval) ->
-        return cb?(err) if err?
+      fn (args...) ->
         done()
-        cb? null, retval
+        cb?.apply @, args
     else
       retval = fn()
       done()
