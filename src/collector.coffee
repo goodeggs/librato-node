@@ -10,6 +10,9 @@ class Collector
   increment: (args...) ->
     @counters.increment(args...)
 
+  measure: (args...) ->
+    @aggregate.measure(args...)
+
   timing: (args...) ->
     @aggregate.timing(args...)
 

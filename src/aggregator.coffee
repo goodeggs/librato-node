@@ -1,3 +1,4 @@
+assert = require 'assert'
 
 sum = (values) -> values.reduce (a, b) -> a + b
 max = (values) -> values.reduce (a, b) -> Math.max(a, b)
@@ -20,8 +21,24 @@ class Aggregator
         sum_squares: sum values.map (value) -> Math.pow(value, 2)
       delete @cache[name]
     
-  timing: (name, value) ->
+  measure: (name, value) ->
+    assert value?, 'value is required'
     (@cache[name] ?= []).push value
 
+  timing: (name, fn, cb) ->
+    assert fn?, 'function is required'
+    start = process.hrtime()
+    done = =>
+      [sec, usec] = process.hrtime(start)
+      msec = (sec * 1000) + Math.max(usec / 1000 / 1000)
+      (@cache[name] ?= []).push msec
+    if fn.length
+      fn (args...) ->
+        done()
+        cb?.apply @, args
+    else
+      retval = fn()
+      done()
+      return retval
     
 module.exports = Aggregator

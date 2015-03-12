@@ -18,11 +18,13 @@ librato.increment = (name, value = 1) ->
   name = sanitize_name(name)
   collector.increment "#{config.prefix ? ''}#{name}", value
 
-librato.timing = (name, valueMs) ->
+librato.measure = (name, value) ->
   name = sanitize_name(name)
-  collector.timing "#{config.prefix ? ''}#{name}", valueMs
+  collector.measure "#{config.prefix ? ''}#{name}", value
 
-librato.measure = librato.timing # alias
+librato.timing = (name, fn) ->
+  name = sanitize_name(name)
+  collector.timing "#{config.prefix ? ''}#{name}", fn
     
 librato.start = ->
   worker.start()

@@ -18,7 +18,7 @@ module.exports = (librato) ->
       res.end = (chunk, encoding) ->
         res.end = end
         res.end(chunk, encoding)
-        librato.timing(responseTimeKey ? 'responseTime', new Date - req._libratoStartTime)
+        librato.measure(responseTimeKey ? 'responseTime', new Date - req._libratoStartTime)
         librato.increment("#{statusCodeKey ? 'statusCode'}.#{Math.floor(res.statusCode / 100)}xx")
 
       next()
