@@ -14,16 +14,14 @@ librato.configure = (newConfig) ->
   client = new Client config
   worker = new Worker job: librato.flush
 
-librato.increment = (name, value = 1, opts) ->
+librato.increment = (name, value = 1, opts={}) ->
   (opts = value; value = 1)  if value is Object(value)
-  name = if opts?.source? then "#{sanitize_name(name)};#{opts.source}"
-  else sanitize_name(name)
-  collector.increment "#{config.prefix ? ''}#{name}", value
+  collector.increment "#{config.prefix ? ''}#{format_key(name, opts.source)}",
+                      value
 
-librato.timing = (name, valueMs, opts) ->
-  name = if opts?.source? then "#{sanitize_name(name)};#{opts.source}"
-  else sanitize_name(name)
-  collector.timing "#{config.prefix ? ''}#{name}", valueMs
+librato.timing = (name, valueMs, opts={}) ->
+  collector.timing "#{config.prefix ? ''}#{format_key(name, opts.source)}",
+                   valueMs
 
 librato.measure = librato.timing # alias
 
@@ -37,8 +35,7 @@ librato.stop = (cb) ->
 librato.flush = (cb = ->) ->
   gauges = []
   collector.flushTo gauges
-  for measurement in gauges
-    measurement.source = config.source  unless measurement.source?
+  measurement.source ?= config.source for measurement in gauges
   return process.nextTick cb unless gauges.length
 
   client.send {gauges}, (err) ->
@@ -49,6 +46,10 @@ librato.middleware = middleware(librato)
 
 
 module.exports = librato
+
+format_key = (name, source) ->
+  if source? then "#{sanitize_name(name)};#{source}"
+  else sanitize_name(name)
 
 # from the official librato statsd backend
 # https://github.com/librato/statsd-librato-backend/blob/dffece631fcdc4c94b2bff1f7526486aa5bfbab9/lib/librato.js#L144
