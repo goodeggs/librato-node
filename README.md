@@ -20,7 +20,7 @@ Once `librato.start` is called, a worker will send aggregated stats to Librato o
 
 ``` javascript
 var librato = require('librato-node');
- 
+
 librato.configure({email: 'foo@example.com', token: 'ABC123'});
 librato.start();
 
@@ -96,6 +96,16 @@ The key names the middleware uses are configurable by passing an options hash.
 
 ``` javascript
 librato.middleware({requestCountKey: 'myRequestCount', responseTimeKey: 'myResponseTime'});
+```
+
+### Advanced
+
+By default the librato-node worker publishes data every 60 seconds. Configure
+this value by passing a `period` argument to the `configure` hash.
+
+```javascript
+var librato = require('librato-node');
+librato.configure({email: 'foo@bar.com', token: 'ABC123', period: 5000})
 ```
 
 ------

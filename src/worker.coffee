@@ -1,13 +1,13 @@
 
 class Worker
-  
+
   period: 60000
-  
+
   constructor: ({@job, period}={}) ->
     throw new Error('must provide job') unless @job?
     @period = period if period?
     @stopped = true
-    
+
   start: ->
     @stopped = false
     nextRun = Worker.startTime(@period)
@@ -20,12 +20,12 @@ class Worker
         else
           return (@timerId = setTimeout workFn, (nextRun - now))
     workFn()
-  
+
   stop: ->
     return if @stopped
     @stopped = true
     clearTimeout @timerId if @timerId?
-    
+
   # Give some structure to worker start times so when possible they will be in sync.
   @startTime: (period) ->
     earliest = new Date(Date.now() + period)
@@ -40,4 +40,3 @@ class Worker
 
 
 module.exports = Worker
-
