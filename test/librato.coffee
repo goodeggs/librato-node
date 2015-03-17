@@ -73,7 +73,6 @@ describe 'librato', ->
       expect(names).to.contain 'foo'
       expect(names).to.contain 'bar'
 
-
     it 'does not post data to Librato if the queue is empty', ->
       librato.flush()
       expect(Client::send.calledOnce).to.be true
@@ -88,3 +87,29 @@ describe 'librato', ->
       librato.flush (err) ->
         expect(Client::send.callCount).to.be 2
         done(err)
+
+  describe '::configuring', ->
+
+    {clock} = {}
+    beforeEach ->
+      clock = sinon.useFakeTimers(new Date().getTime())
+
+    it 'sends data every 60 seconds', ->
+      sinon.stub(librato, 'flush')
+      librato.configure email: 'foo@example.com', token: 'foobar'
+      librato.start()
+      expect(librato.flush.calledOnce).to.be false
+      clock.tick(59000)
+      expect(librato.flush.calledOnce).to.be false
+      clock.tick(1100)
+      expect(librato.flush.calledOnce).to.be true
+
+    it 'allows you to configure the period', ->
+      sinon.stub(librato, 'flush')
+      librato.configure email: 'foo@example.com', token: 'foobar', period: 3000
+      librato.start()
+      clock.tick(4000)
+      expect(librato.flush.calledOnce).to.be true
+
+    afterEach ->
+      clock.restore()
