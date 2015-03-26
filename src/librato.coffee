@@ -25,10 +25,10 @@ librato.measure = (name, value) ->
 librato.timing = (name, fn) ->
   name = sanitize_name(name)
   collector.timing "#{config.prefix ? ''}#{name}", fn
-    
+
 librato.start = ->
   worker.start()
-    
+
 librato.stop = (cb) ->
   worker.stop()
   librato.flush(cb)
@@ -52,4 +52,3 @@ module.exports = librato
 # https://github.com/librato/statsd-librato-backend/blob/dffece631fcdc4c94b2bff1f7526486aa5bfbab9/lib/librato.js#L144
 sanitize_name = (name) ->
   return name.replace(/[^-.:_\w]+/g, '_').substr(0,255)
-

@@ -3,6 +3,17 @@ _ = require 'lodash'
 Client = require '../lib/client'
 librato = require '..'
 
+describe 'librato failure', ->
+  beforeEach ->
+    librato.configure email: 'foo@example.com', token: 'foobar'
+    sinon.stub Client::, 'send', (data, cb) ->
+      cb new Error 'error sending data: {} 500'
+
+  it 'does not crash the client', (done) ->
+    librato.increment('messages')
+    librato.flush()
+
+
 describe 'librato', ->
   beforeEach ->
     librato.configure email: 'foo@example.com', token: 'foobar'

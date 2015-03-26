@@ -10,7 +10,7 @@ class Client
       console.warn "librato-node metrics disabled: no email or token provided." unless simulate
     else
       @_authHeader = 'Basic ' + new Buffer("#{email}:#{token}").toString('base64')
-    
+
   send: (json, cb) ->
     return cb() unless @_authHeader
     requestOptions =
@@ -20,13 +20,12 @@ class Client
       headers:
         authorization: @_authHeader
         'user-agent': 'librato-node/'+ packageJson.version
-        
+
     request requestOptions, (err, res, body) ->
       return cb(err) if err?
       if res.statusCode > 399 or body?.errors?
         return cb(new Error("Error sending to Librato: #{util.inspect(body)} (statusCode: #{res.statusCode})"))
       return cb(null, body)
 
-    
-module.exports = Client
 
+module.exports = Client
