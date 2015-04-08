@@ -22,9 +22,9 @@ librato.increment = (name, value = 1, opts={}) ->
 librato.measure = (name, value, opts={}) ->
   collector.measure "#{config.prefix ? ''}#{format_key(name, opts.source)}", value
 
-librato.timing = (name, opts={}, fn) ->
-  [opts, fn] = [{}, opts] if !fn? and typeof opts is 'function'
-  collector.timing "#{config.prefix ? ''}#{format_key(name, opts.source)}", fn
+librato.timing = (name, fn, opts={}, cb) ->
+  [opts, cb] = [{}, opts] if !cb? and typeof opts is 'function'
+  collector.timing "#{config.prefix ? ''}#{format_key(name, opts.source)}", fn, cb
 
 librato.start = ->
   worker.start()

@@ -36,8 +36,9 @@ Use `librato.increment` to track counts in Librato.  On each flush, the incremen
 ``` javascript
 var librato = require('librato-node');
 
-librato.increment('foo');
-librato.increment('foo', 2);
+librato.increment('foo');                     // increment by 1
+librato.increment('foo', 2);                  // increment by 2
+librato.increment('foo', 2, {source: 'bar'}); // custom source
 ```
 
 ### Measurements
@@ -49,14 +50,7 @@ var librato = require('librato-node');
 
 librato.measure('member-count', 2001);
 librato.measure('response-time', 500);
-```
-
-Optionally a source can be specified for the metric.
-
-``` javascript
-var librato = require('librato-node');
-
-librato.increment('foo', {source: 'bar'});
+librato.measure('foo', 250, {source: 'bar'}); // custom source
 ```
 
 ### Timing
@@ -86,14 +80,7 @@ var cb = function(err, res) {
   console.log(res); // => 'foo'
 };
 librato.timing('foo', workFn, cb);
-```
-
-Optionally a source can be specified for the metric.
-
-``` javascript
-var librato = require('librato-node');
-
-librato.timing('foo', 500, {source: 'bar'});
+librato.timing('foo', workFn, {source: 'bar'}, cb); // all timing calls also accept a custom source
 ```
 
 ### Express

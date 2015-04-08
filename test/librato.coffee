@@ -59,7 +59,7 @@ describe 'librato', ->
 
       describe 'with a custom source', ->
         it 'does not throw', ->
-          expect(-> librato.timing('foobar', source: 'source', ((cb) ->))).not.to.throwError()
+          expect(-> librato.timing('foobar', ((cb) ->), source: 'bar')).not.to.throwError()
 
     describe 'with an asynchronous function', ->
       it 'does not throw', ->
