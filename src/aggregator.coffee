@@ -8,30 +8,33 @@ min = (values) -> values.reduce (a, b) -> Math.min(a, b)
 class Aggregator
   constructor: ->
     @cache = {}
-    
+
   flushTo: (queue) ->
-    for name, values of @cache
+    for key, values of @cache
+      [name, source] = key.split ';'
       values.sort()
-      queue.push
+      obj =
         name: name
         count: values.length
         sum: sum values
         max: max values
         min: min values
         sum_squares: sum values.map (value) -> Math.pow(value, 2)
-      delete @cache[name]
+      obj.source = source if source?
+      queue.push obj
+      delete @cache[key]
     
-  measure: (name, value) ->
+  measure: (key, value) ->
     assert value?, 'value is required'
-    (@cache[name] ?= []).push value
+    (@cache[key] ?= []).push value
 
-  timing: (name, fn, cb) ->
+  timing: (key, fn, cb) ->
     assert fn?, 'function is required'
     start = process.hrtime()
     done = =>
       [sec, usec] = process.hrtime(start)
       msec = (sec * 1000) + Math.max(usec / 1000 / 1000)
-      (@cache[name] ?= []).push msec
+      (@cache[key] ?= []).push msec
     if fn.length
       fn (args...) ->
         done()
@@ -40,5 +43,5 @@ class Aggregator
       retval = fn()
       done()
       return retval
-    
+
 module.exports = Aggregator

@@ -33,8 +33,28 @@ describe 'Aggregator', ->
         queue = []
         aggregator.flushTo(queue)
         expect(queue).to.have.length 1
-        expect(queue[0].name).to.equal 'foobar'
-        expect(queue[0].sum).to.equal 1001
+        expect(queue[0]).to.have.property 'name', 'foobar'
+        expect(queue[0]).to.have.property 'sum', 1001
+        expect(queue[0]).not.to.have.property 'source'
+
+    describe 'given a synchronous function (arity 0) and a custom source', ->
+      {fn, retval} = {}
+
+      beforeEach ->
+        fn = sinon.spy(-> 'foo')
+        sinon.stub(process, 'hrtime').returns([1, 1000000])
+        retval = aggregator.timing 'foobar;source1', fn
+
+      afterEach ->
+        process.hrtime.restore()
+
+      it 'measures the duration', ->
+        queue = []
+        aggregator.flushTo(queue)
+        expect(queue).to.have.length 1
+        expect(queue[0]).to.have.property 'name', 'foobar'
+        expect(queue[0]).to.have.property 'sum', 1001
+        expect(queue[0]).to.have.property 'source', 'source1'
 
     describe 'given an asynchronous function (arity 1)', ->
       {fn, retval} = {}
@@ -84,6 +104,15 @@ describe 'Aggregator', ->
       expect(foobar.sum).to.equal 300
       expect(foobar.sum_squares).to.equal 50000
 
+    it 'handles metrics with a source', ->
+      aggregator.measure('foobar;source', 100)
+      queue = []
+      aggregator.flushTo(queue)
+      expect(queue).to.have.length 1
+
+      foobar = queue[0]
+      expect(foobar.source).to.equal 'source'
+
     it 'handles multiple metrics', ->
       aggregator.measure('foo', 100)
       aggregator.measure('bar', 200)
@@ -116,4 +145,3 @@ describe 'Aggregator', ->
         queue = []
         aggregator.flushTo queue
         expect(queue).to.have.length 0
-
