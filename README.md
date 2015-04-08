@@ -51,6 +51,14 @@ librato.measure('member-count', 2001);
 librato.measure('response-time', 500);
 ```
 
+Optionally a source can be specified for the metric.
+
+``` javascript
+var librato = require('librato-node');
+
+librato.increment('foo', {source: 'bar'});
+```
+
 ### Timing
 
 Use `librato.timing` to measure durations in Librato. You can pass it a synchronous function or an asynchronous function (it checks the function arity).  For example:
@@ -78,6 +86,14 @@ var cb = function(err, res) {
   console.log(res); // => 'foo'
 };
 librato.timing('foo', workFn, cb);
+```
+
+Optionally a source can be specified for the metric.
+
+``` javascript
+var librato = require('librato-node');
+
+librato.timing('foo', 500, {source: 'bar'});
 ```
 
 ### Express

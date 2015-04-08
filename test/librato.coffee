@@ -39,10 +39,27 @@ describe 'librato', ->
       values = _(args[0].gauges).pluck('value').value()
       expect(names).to.contain 'this_is_:a_test_'
 
+    it 'accepts a custom source', ->
+      librato.increment('messages', {source: 'source1'})
+      librato.increment('messages', {source: 'source2'})
+      librato.flush()
+      expect(Client::send.calledOnce).to.be true
+      args = Client::send.getCall(0).args
+      names = _(args[0].gauges).pluck('name').value()
+      sources = _(args[0].gauges).pluck('source').value()
+      values = _(args[0].gauges).pluck('value').value()
+      expect(names).to.eql ['messages', 'messages']
+      expect(values).to.eql [1, 1]
+      expect(sources).to.eql ['source1', 'source2']
+
   describe '::timing', ->
     describe 'with a synchronous function', ->
       it 'does not throw', ->
         expect(-> librato.timing('foobar', (->))).not.to.throwError()
+
+      describe 'with a custom source', ->
+        it 'does not throw', ->
+          expect(-> librato.timing('foobar', source: 'source', ((cb) ->))).not.to.throwError()
 
     describe 'with an asynchronous function', ->
       it 'does not throw', ->
