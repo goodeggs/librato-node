@@ -14,7 +14,7 @@
     "express"
   ],
   "dependencies": {
-    "request": "2.x.x"
+    "request": "~2.45.0"
   },
   "devDependencies": {
     "coffee-script": ">=1.8.0 <2.0.0",
