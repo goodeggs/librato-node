@@ -111,6 +111,13 @@ var librato = require('librato-node');
 librato.configure({email: 'foo@bar.com', token: 'ABC123', period: 5000})
 ```
 
+You can pass additional options (such as `timeout`) for the HTTP POST to Librato using the `requestOptions` parameter.  See [request/request](https://github.com/request/request) for a complete list of options.
+
+```javascript
+var librato = require('librato-node');
+librato.configure({email: 'foo@bar.com', token: 'ABC123', requestOptions: {timeout: 250}})
+```
+
 ------
 
 ## Contributing
