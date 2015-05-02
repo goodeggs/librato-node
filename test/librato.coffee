@@ -86,9 +86,11 @@ describe 'librato', ->
     it 'sends data to Librato', ->
       expect(Client::send.calledOnce).to.be true
       args = Client::send.getCall(0).args
-      names = _(args[0].gauges).pluck('name').value()
-      expect(names).to.contain 'foo'
-      expect(names).to.contain 'bar'
+      gauges = _(args[0].gauges).pluck('name').value()
+      counters = _(args[0].counters).pluck('name').value()
+      expect(counters).to.eql []
+      expect(gauges).to.contain 'foo'
+      expect(gauges).to.contain 'bar'
 
     it 'does not post data to Librato if the queue is empty', ->
       librato.flush()
@@ -104,6 +106,22 @@ describe 'librato', ->
       librato.flush (err) ->
         expect(Client::send.callCount).to.be 2
         done(err)
+
+  describe '::counters', ->
+    beforeEach ->
+      librato.configure email: 'foo@example.com', token: 'foobar', counters: true
+      librato.increment('foo')
+      librato.measure('bar', 1)
+      librato.flush()
+
+    it 'sends data to Librato', ->
+      expect(Client::send.calledOnce).to.be true
+      args = Client::send.getCall(0).args
+      gauges = _(args[0].gauges).pluck('name').value()
+      counters = _(args[0].counters).pluck('name').value()
+      expect(counters).to.contain 'foo'
+      expect(gauges).to.contain 'bar'
+
 
   describe '::configuring', ->
 
