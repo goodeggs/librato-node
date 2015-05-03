@@ -18,7 +18,7 @@ class Collector
 
   flushTo: (gauges, counters) ->
     @aggregate.flushTo(gauges)
-    @counters.flushTo(counters)
+    @counters.flushTo(counters, counters != gauges)
 
 module.exports = Collector
 

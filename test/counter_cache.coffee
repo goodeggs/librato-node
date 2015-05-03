@@ -40,9 +40,13 @@ describe 'CounterCache', ->
     it 'clears the internal queue', ->
       counter.increment('foo')
       queue = []
-      counter.flushTo queue
+      counter.flushTo queue, true
       expect(queue).to.have.length 1
 
       queue = []
-      counter.flushTo queue
+      counter.flushTo queue, false
+      expect(queue).to.have.length 1
+
+      queue = []
+      counter.flushTo queue, false
       expect(queue).to.have.length 0
