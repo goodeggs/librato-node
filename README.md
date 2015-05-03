@@ -41,6 +41,8 @@ librato.increment('foo', 2);                  // increment by 2
 librato.increment('foo', 2, {source: 'bar'}); // custom source
 ```
 
+By default counts are reported as gauges in Librato. Set `counters: true` in `librato.configure()` to have them reported as counters. Note that this may not work very well in a distributed setting.
+
 ### Measurements
 
 You can send arbitrary measurements to Librato using `librato.measure`. These will be sent as gauges. For example:

@@ -16,9 +16,9 @@ class Collector
   timing: (args...) ->
     @aggregate.timing(args...)
 
-  flushTo: (queue) ->
-    @counters.flushTo(queue)
-    @aggregate.flushTo(queue)
+  flushTo: (gauges, counters) ->
+    @aggregate.flushTo(gauges)
+    @counters.flushTo(counters, counters != gauges)
 
 module.exports = Collector
 
