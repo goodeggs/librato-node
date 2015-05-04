@@ -109,7 +109,7 @@ describe 'librato', ->
 
     {clock} = {}
     beforeEach ->
-      clock = sinon.useFakeTimers(new Date().getTime())
+      clock = sinon.useFakeTimers(0)
 
     it 'sends data every 60 seconds', ->
       sinon.stub(librato, 'flush')
@@ -128,5 +128,3 @@ describe 'librato', ->
       clock.tick(4000)
       expect(librato.flush.calledOnce).to.be true
 
-    afterEach ->
-      clock.restore()

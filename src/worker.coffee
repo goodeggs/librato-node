@@ -28,15 +28,8 @@ class Worker
 
   # Give some structure to worker start times so when possible they will be in sync.
   @startTime: (period) ->
-    earliest = new Date(Date.now() + period)
-    # already on a whole minute
-    return earliest.valueOf() if earliest.getSeconds() is 0
-    if period > 30
-      # bump to whole minute
-      return earliest.valueOf() + (60 - earliest.getSeconds())
-    else
-      # ensure sync to whole minute if minute is evenly divisible
-      return earliest.valueOf() + (period - (earliest.getSeconds() % period))
+    now = Date.now()
+    return now + (period - (now % period))
 
 
 module.exports = Worker
