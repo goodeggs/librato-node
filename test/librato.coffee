@@ -15,8 +15,8 @@ describe 'librato', ->
       librato.flush()
       expect(Client::send.calledOnce).to.be true
       args = Client::send.getCall(0).args
-      names = _(args[0].gauges).pluck('name').value()
-      values = _(args[0].gauges).pluck('value').value()
+      names = _(args[0].counters).pluck('name').value()
+      values = _(args[0].counters).pluck('value').value()
       expect(names).to.contain 'messages'
       expect(values).to.contain 1
 
@@ -25,8 +25,8 @@ describe 'librato', ->
       librato.flush()
       expect(Client::send.calledOnce).to.be true
       args = Client::send.getCall(0).args
-      names = _(args[0].gauges).pluck('name').value()
-      values = _(args[0].gauges).pluck('value').value()
+      names = _(args[0].counters).pluck('name').value()
+      values = _(args[0].counters).pluck('value').value()
       expect(names).to.contain 'messages'
       expect(values).to.contain 2
 
@@ -35,8 +35,8 @@ describe 'librato', ->
       librato.flush()
       expect(Client::send.calledOnce).to.be true
       args = Client::send.getCall(0).args
-      names = _(args[0].gauges).pluck('name').value()
-      values = _(args[0].gauges).pluck('value').value()
+      names = _(args[0].counters).pluck('name').value()
+      values = _(args[0].counters).pluck('value').value()
       expect(names).to.contain 'this_is_:a_test_'
 
     it 'accepts a custom source', ->
@@ -45,9 +45,9 @@ describe 'librato', ->
       librato.flush()
       expect(Client::send.calledOnce).to.be true
       args = Client::send.getCall(0).args
-      names = _(args[0].gauges).pluck('name').value()
-      sources = _(args[0].gauges).pluck('source').value()
-      values = _(args[0].gauges).pluck('value').value()
+      names = _(args[0].counters).pluck('name').value()
+      sources = _(args[0].counters).pluck('source').value()
+      values = _(args[0].counters).pluck('value').value()
       expect(names).to.eql ['messages', 'messages']
       expect(values).to.eql [1, 1]
       expect(sources).to.eql ['source1', 'source2']
@@ -86,8 +86,9 @@ describe 'librato', ->
     it 'sends data to Librato', ->
       expect(Client::send.calledOnce).to.be true
       args = Client::send.getCall(0).args
-      names = _(args[0].gauges).pluck('name').value()
+      names = _(args[0].counters).pluck('name').value()
       expect(names).to.contain 'foo'
+      names = _(args[0].gauges).pluck('name').value()
       expect(names).to.contain 'bar'
 
     it 'does not post data to Librato if the queue is empty', ->

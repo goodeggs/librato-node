@@ -34,12 +34,14 @@ librato.stop = (cb) ->
   librato.flush(cb)
 
 librato.flush = (cb = ->) ->
+  counters = []
   gauges = []
-  collector.flushTo gauges
+  collector.flushTo counters, gauges
+  measurement.source ?= config.source for measurement in counters
   measurement.source ?= config.source for measurement in gauges
-  return process.nextTick(cb) unless gauges.length
+  return process.nextTick(cb) unless counters.length or gauges.length
 
-  client.send {gauges}, (err) ->
+  client.send {counters, gauges}, (err) ->
     librato.emit 'error', err if err?
     cb(err)
 

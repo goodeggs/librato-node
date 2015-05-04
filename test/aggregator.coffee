@@ -34,7 +34,7 @@ describe 'Aggregator', ->
         aggregator.flushTo(queue)
         expect(queue).to.have.length 1
         expect(queue[0]).to.have.property 'name', 'foobar'
-        expect(queue[0]).to.have.property 'sum', 1001
+        expect(queue[0]).to.have.property 'value', 1001
         expect(queue[0]).not.to.have.property 'source'
 
     describe 'given a synchronous function (arity 0) and a custom source', ->
@@ -53,7 +53,7 @@ describe 'Aggregator', ->
         aggregator.flushTo(queue)
         expect(queue).to.have.length 1
         expect(queue[0]).to.have.property 'name', 'foobar'
-        expect(queue[0]).to.have.property 'sum', 1001
+        expect(queue[0]).to.have.property 'value', 1001
         expect(queue[0]).to.have.property 'source', 'source1'
 
     describe 'given an asynchronous function (arity 1)', ->
@@ -80,7 +80,7 @@ describe 'Aggregator', ->
         aggregator.flushTo(queue)
         expect(queue).to.have.length 1
         expect(queue[0].name).to.equal 'foobar'
-        expect(queue[0].sum).to.equal 1001
+        expect(queue[0].value).to.equal 1001
 
   describe '::measure', ->
 
@@ -121,18 +121,10 @@ describe 'Aggregator', ->
       expect(queue).to.have.length 2
 
       foo = _(queue).find (item) -> item.name is 'foo'
-      expect(foo.count).to.equal 1
-      expect(foo.min).to.equal 100
-      expect(foo.max).to.equal 100
-      expect(foo.sum).to.equal 100
-      expect(foo.sum_squares).to.equal 10000
+      expect(foo.value).to.equal 100
 
       bar = _(queue).find (item) -> item.name is 'bar'
-      expect(bar.count).to.equal 1
-      expect(bar.min).to.equal 200
-      expect(bar.max).to.equal 200
-      expect(bar.sum).to.equal 200
-      expect(bar.sum_squares).to.equal 40000
+      expect(bar.value).to.equal 200
 
     describe '::flushTo', ->
       it 'clears the internal queue', ->
