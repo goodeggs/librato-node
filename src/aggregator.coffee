@@ -12,16 +12,21 @@ class Aggregator
   flushTo: (queue) ->
     for key, values of @cache
       [name, source] = key.split ';'
-      values.sort()
-      obj =
-        name: name
-        count: values.length
-        sum: sum values
-        max: max values
-        min: min values
-        sum_squares: sum values.map (value) -> Math.pow(value, 2)
+      obj = name: name
+
+      if values.length > 1
+        values.sort()
+        obj.count = values.length
+        obj.sum = sum values
+        obj.max = max values
+        obj.min = min values
+        obj.sum_squares = sum values.map (value) -> Math.pow(value, 2)
+      else
+        obj.value = values[0]
+
       obj.source = source if source?
       queue.push obj
+
       delete @cache[key]
     
   measure: (key, value) ->

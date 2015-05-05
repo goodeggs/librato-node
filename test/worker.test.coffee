@@ -14,7 +14,7 @@ describe 'Worker', ->
     {clock, period} = {}
 
     beforeEach ->
-      clock = sinon.useFakeTimers(0)
+      clock = @sinon.useFakeTimers(0)
 
     describe 'at 00:00:00', ->
 

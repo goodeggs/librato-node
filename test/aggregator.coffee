@@ -10,21 +10,21 @@ describe 'Aggregator', ->
 
   describe '::timing', ->
     it 'requires a function', ->
-      expect(-> aggregator.timing('foobar')).to.throwError()
+      expect(-> aggregator.timing('foobar')).to.throw
 
     describe 'given a synchronous function (arity 0)', ->
       {fn, retval} = {}
 
       beforeEach ->
-        fn = sinon.spy(-> 'foo')
-        sinon.stub(process, 'hrtime').returns([1, 1000000])
+        fn = @sinon.spy(-> 'foo')
+        @sinon.stub(process, 'hrtime').returns([1, 1000000])
         retval = aggregator.timing 'foobar', fn
 
       afterEach ->
         process.hrtime.restore()
 
       it 'calls the function', ->
-        expect(fn.callCount).to.equal 1
+        expect(fn).to.have.been.calledOnce
 
       it "returns the function's return value", ->
         expect(retval).to.equal 'foo'
@@ -34,15 +34,15 @@ describe 'Aggregator', ->
         aggregator.flushTo(queue)
         expect(queue).to.have.length 1
         expect(queue[0]).to.have.property 'name', 'foobar'
-        expect(queue[0]).to.have.property 'sum', 1001
+        expect(queue[0]).to.have.property 'value', 1001
         expect(queue[0]).not.to.have.property 'source'
 
     describe 'given a synchronous function (arity 0) and a custom source', ->
       {fn, retval} = {}
 
       beforeEach ->
-        fn = sinon.spy(-> 'foo')
-        sinon.stub(process, 'hrtime').returns([1, 1000000])
+        fn = @sinon.spy(-> 'foo')
+        @sinon.stub(process, 'hrtime').returns([1, 1000000])
         retval = aggregator.timing 'foobar;source1', fn
 
       afterEach ->
@@ -53,15 +53,15 @@ describe 'Aggregator', ->
         aggregator.flushTo(queue)
         expect(queue).to.have.length 1
         expect(queue[0]).to.have.property 'name', 'foobar'
-        expect(queue[0]).to.have.property 'sum', 1001
+        expect(queue[0]).to.have.property 'value', 1001
         expect(queue[0]).to.have.property 'source', 'source1'
 
     describe 'given an asynchronous function (arity 1)', ->
       {fn, retval} = {}
 
       beforeEach (done) ->
-        fn = sinon.spy((cb) -> process.nextTick(-> cb(null, 'foo')))
-        sinon.stub(process, 'hrtime').returns([1, 1000000])
+        fn = @sinon.spy((cb) -> process.nextTick(-> cb(null, 'foo')))
+        @sinon.stub(process, 'hrtime').returns([1, 1000000])
         aggregator.timing 'foobar', fn, (err, _retval) ->
           retval = _retval
           done()
@@ -80,15 +80,15 @@ describe 'Aggregator', ->
         aggregator.flushTo(queue)
         expect(queue).to.have.length 1
         expect(queue[0].name).to.equal 'foobar'
-        expect(queue[0].sum).to.equal 1001
+        expect(queue[0].value).to.equal 1001
 
   describe '::measure', ->
 
     it 'requires a value', ->
-      expect(-> aggregator.measure('foobar')).to.throwError()
+      expect(-> aggregator.measure('foobar')).to.throw
 
     it 'given a value, does not throw', ->
-      expect(-> aggregator.measure('foobar', 1)).not.to.throwError()
+      expect(-> aggregator.measure('foobar', 1)).not.to.throw
 
     it 'handles a single metric', ->
       aggregator.measure('foobar', 100)
@@ -121,18 +121,10 @@ describe 'Aggregator', ->
       expect(queue).to.have.length 2
 
       foo = _(queue).find (item) -> item.name is 'foo'
-      expect(foo.count).to.equal 1
-      expect(foo.min).to.equal 100
-      expect(foo.max).to.equal 100
-      expect(foo.sum).to.equal 100
-      expect(foo.sum_squares).to.equal 10000
+      expect(foo.value).to.equal 100
 
       bar = _(queue).find (item) -> item.name is 'bar'
-      expect(bar.count).to.equal 1
-      expect(bar.min).to.equal 200
-      expect(bar.max).to.equal 200
-      expect(bar.sum).to.equal 200
-      expect(bar.sum_squares).to.equal 40000
+      expect(bar.value).to.equal 200
 
     describe '::flushTo', ->
       it 'clears the internal queue', ->

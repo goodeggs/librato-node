@@ -1,14 +1,7 @@
 require('source-map-support').install()
+require 'mocha-sinon'
+{expect} = chai = require 'chai'
+chai.use require('sinon-chai')
 
-realSinon = require 'sinon'
-expect = require 'expect.js'
-
-GLOBAL.sinon = null
 GLOBAL.expect = expect
-
-beforeEach ->
-  GLOBAL.sinon = realSinon.sandbox.create()
-  
-afterEach ->
-  GLOBAL.sinon.restore()
 
