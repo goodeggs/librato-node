@@ -18,11 +18,13 @@
     "request": "^2.55.0"
   },
   "devDependencies": {
+    "chai": "^2.3.0",
     "coffee-script": "^1.8.0",
-    "expect.js": "^0.3.1",
     "mocha": "^2.0.1",
+    "mocha-sinon": "^1.1.4",
     "nock": "^1.6.0",
     "sinon": "^1.12.2",
+    "sinon-chai": "^2.7.0",
     "source-map-support": "^0.2.8"
   },
   "scripts": {

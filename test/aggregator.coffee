@@ -10,21 +10,21 @@ describe 'Aggregator', ->
 
   describe '::timing', ->
     it 'requires a function', ->
-      expect(-> aggregator.timing('foobar')).to.throwError()
+      expect(-> aggregator.timing('foobar')).to.throw
 
     describe 'given a synchronous function (arity 0)', ->
       {fn, retval} = {}
 
       beforeEach ->
-        fn = sinon.spy(-> 'foo')
-        sinon.stub(process, 'hrtime').returns([1, 1000000])
+        fn = @sinon.spy(-> 'foo')
+        @sinon.stub(process, 'hrtime').returns([1, 1000000])
         retval = aggregator.timing 'foobar', fn
 
       afterEach ->
         process.hrtime.restore()
 
       it 'calls the function', ->
-        expect(fn.callCount).to.equal 1
+        expect(fn).to.have.been.calledOnce
 
       it "returns the function's return value", ->
         expect(retval).to.equal 'foo'
@@ -41,8 +41,8 @@ describe 'Aggregator', ->
       {fn, retval} = {}
 
       beforeEach ->
-        fn = sinon.spy(-> 'foo')
-        sinon.stub(process, 'hrtime').returns([1, 1000000])
+        fn = @sinon.spy(-> 'foo')
+        @sinon.stub(process, 'hrtime').returns([1, 1000000])
         retval = aggregator.timing 'foobar;source1', fn
 
       afterEach ->
@@ -60,8 +60,8 @@ describe 'Aggregator', ->
       {fn, retval} = {}
 
       beforeEach (done) ->
-        fn = sinon.spy((cb) -> process.nextTick(-> cb(null, 'foo')))
-        sinon.stub(process, 'hrtime').returns([1, 1000000])
+        fn = @sinon.spy((cb) -> process.nextTick(-> cb(null, 'foo')))
+        @sinon.stub(process, 'hrtime').returns([1, 1000000])
         aggregator.timing 'foobar', fn, (err, _retval) ->
           retval = _retval
           done()
@@ -85,10 +85,10 @@ describe 'Aggregator', ->
   describe '::measure', ->
 
     it 'requires a value', ->
-      expect(-> aggregator.measure('foobar')).to.throwError()
+      expect(-> aggregator.measure('foobar')).to.throw
 
     it 'given a value, does not throw', ->
-      expect(-> aggregator.measure('foobar', 1)).not.to.throwError()
+      expect(-> aggregator.measure('foobar', 1)).not.to.throw
 
     it 'handles a single metric', ->
       aggregator.measure('foobar', 100)

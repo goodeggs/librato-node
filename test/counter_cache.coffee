@@ -3,43 +3,34 @@ _ = require 'lodash'
 CounterCache = require '../lib/counter_cache'
 
 describe 'CounterCache', ->
-  {counter} = {}
+  {counter, queue} = {}
 
   beforeEach ->
     counter = new CounterCache()
+    queue = []
 
   describe '::increment', ->
     it 'counts a single metric', ->
       counter.increment('foobar')
       counter.increment('foobar')
-      queue = []
       counter.flushTo(queue)
-      expect(queue).to.have.length 1
-      expect(queue[0]).to.eql {name: 'foobar', value: 2}
+      expect(queue).to.eql [{name: 'foobar', value: 2}]
 
     it 'counts metrics with a source', ->
       counter.increment('foobar;source')
       counter.increment('foobar;source')
-      queue = []
       counter.flushTo(queue)
-      expect(queue).to.have.length 1
-      expect(queue[0]).to.eql {name: 'foobar', value: 2, source: 'source'}
+      expect(queue).to.eql [{name: 'foobar', value: 2, source: 'source'}]
 
     it 'counts multiple metrics', ->
       counter.increment('foo')
       counter.increment('bar')
-      queue = []
       counter.flushTo queue
-      expect(queue).to.have.length 2
-      foo = _(queue).find (item) -> item.name is 'foo'
-      expect(foo.value).to.equal 1
-      bar = _(queue).find (item) -> item.name is 'bar'
-      expect(bar.value).to.equal 1
+      expect(queue).to.eql [{name: 'foo', value: 1}, {name: 'bar', value: 1}]
 
   describe '::flushTo', ->
     it 'clears the internal queue', ->
       counter.increment('foo')
-      queue = []
       counter.flushTo queue
       expect(queue).to.have.length 1
 
