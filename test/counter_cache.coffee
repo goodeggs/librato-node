@@ -29,11 +29,13 @@ describe 'CounterCache', ->
       expect(queue).to.eql [{name: 'foo', value: 1}, {name: 'bar', value: 1}]
 
   describe '::flushTo', ->
-    it 'clears the internal queue', ->
+
+    it 'flushes an ever-increasing value', ->
       counter.increment('foo')
       counter.flushTo queue
-      expect(queue).to.have.length 1
+      expect(queue).to.eql [{name: 'foo', value: 1}]
 
-      queue = []
+      counter.increment('foo')
       counter.flushTo queue
-      expect(queue).to.have.length 0
+      expect(queue).to.eql [{name: 'foo', value: 1},{name: 'foo', value: 2}]
+

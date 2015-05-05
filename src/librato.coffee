@@ -37,8 +37,9 @@ librato.flush = (cb = ->) ->
   counters = []
   gauges = []
   collector.flushTo counters, gauges
-  measurement.source ?= config.source for measurement in counters
-  measurement.source ?= config.source for measurement in gauges
+  if config.source?
+    measurement.source ?= config.source for measurement in counters
+    measurement.source ?= config.source for measurement in gauges
   return process.nextTick(cb) unless counters.length or gauges.length
 
   client.send {counters, gauges}, (err) ->
