@@ -26,7 +26,7 @@ class Client
     request requestOptions, (err, res, body) ->
       return cb(err) if err?
       if res.statusCode > 399 or body?.errors?
-        return cb(new Error("Error sending to Librato: #{util.inspect(body)} (statusCode: #{res.statusCode})"))
+        return cb(new Error("Error sending to Librato: #{util.inspect(body, depth: null)} (statusCode: #{res.statusCode})"))
       return cb(null, body)
 
 module.exports = Client

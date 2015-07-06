@@ -22,6 +22,24 @@ describe 'Client', ->
       it 'sends data to Librato', (done) ->
         client.send {gauges: [{name: 'foo', value: 1}]}, done
 
+  describe 'Librato returns a 400', ->
+  
+    beforeEach ->
+      nock('https://metrics-api.librato.com/v1')
+        .post('/metrics')
+        .basicAuth(user: 'foo@example.com', pass: 'bob')
+        .reply(400, errors: {params: {name: ['is not present']}})
+      client = new Client email: 'foo@example.com', token: 'bob'
+
+    afterEach ->
+      nock.cleanAll()
+      
+    describe '::send', ->
+      it 'throws an error with the response body', (done) ->
+        client.send {gauges: [{name: '', value: 1}]}, (err) ->
+          expect(err.message).to.equal "Error sending to Librato: { errors: { params: { name: [ 'is not present' ] } } } (statusCode: 400)"
+          done()
+
   describe 'with timeout via requestOptions', ->
   
     beforeEach ->
