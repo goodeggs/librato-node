@@ -27,6 +27,11 @@ librato.start();
 process.once('SIGINT', function() {
   librato.stop(); // stop optionally takes a callback
 });
+
+// Don't forget to specify an error handler, otherwise errors will be thrown
+librato.on('error', function(err) {
+  console.error(err);
+});
 ```
 
 ### Increment
