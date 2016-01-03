@@ -1,37 +1,33 @@
 assert = require 'assert'
 
-sum = (values) -> values.reduce (a, b) -> a + b
-max = (values) -> values.reduce (a, b) -> Math.max(a, b)
-min = (values) -> values.reduce (a, b) -> Math.min(a, b)
-
 
 class Aggregator
   constructor: ->
     @cache = {}
 
   flushTo: (queue) ->
-    for key, values of @cache
+    for key, state of @cache
       [name, source] = key.split ';'
-      obj = name: name
 
-      if values.length > 1
-        values.sort()
-        obj.count = values.length
-        obj.sum = sum values
-        obj.max = max values
-        obj.min = min values
-        obj.sum_squares = sum values.map (value) -> Math.pow(value, 2)
+      if state.count > 1
+        obj = state
       else
-        obj.value = values[0]
+        obj = value: state.sum
 
+      obj.name = name
       obj.source = source if source?
       queue.push obj
 
       delete @cache[key]
-    
+
   measure: (key, value) ->
     assert value?, 'value is required'
-    (@cache[key] ?= []).push value
+    @cache[key] ?= {count: 0, sum: 0, min: value, max: value, sum_squares: 0}
+    @cache[key].count++
+    @cache[key].sum += value
+    @cache[key].min = Math.min(@cache[key].min, value)
+    @cache[key].max = Math.max(@cache[key].max, value)
+    @cache[key].sum_squares += Math.pow(value, 2)
 
   timing: (key, fn, cb) ->
     assert fn?, 'function is required'
@@ -39,7 +35,7 @@ class Aggregator
     done = =>
       [sec, usec] = process.hrtime(start)
       msec = (sec * 1000) + Math.max(usec / 1000 / 1000)
-      (@cache[key] ?= []).push msec
+      this.measure(key, msec)
     if fn.length
       fn (args...) ->
         done()
