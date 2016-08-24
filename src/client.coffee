@@ -23,10 +23,12 @@ class Client
 
     requestOptions = _.extend {}, @_requestOptions, {json}
 
-    request requestOptions, (err, res, body) ->
+    request requestOptions, (err, res, body) =>
       return cb(err) if err?
       if res.statusCode > 399 or body?.errors?
-        return cb(new Error("Error sending to Librato: #{util.inspect(body, depth: null)} (statusCode: #{res.statusCode})"))
+        sanitizedRequestOptions = _.cloneDeep(@_requestOptions)
+        delete sanitizedRequestOptions.headers.authorization
+        return cb(new Error("Error sending to Librato: #{util.inspect(body, depth: null)} (statusCode: #{res.statusCode}, requestOptions: #{util.inspect(sanitizedRequestOptions, depth: null)})"))
       return cb(null, body)
 
 module.exports = Client
