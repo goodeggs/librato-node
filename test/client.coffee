@@ -41,14 +41,13 @@ describe 'Client', ->
           done()
 
   describe 'with timeout via requestOptions', ->
-
     beforeEach ->
       nock('https://metrics-api.librato.com/v1')
         .post('/metrics')
         .basicAuth(user: 'foo@example.com', pass: 'bob')
         .socketDelay(10)
         .reply(200)
-      client = new Client email: 'foo@example.com', token: 'bob', requestOptions: {timeout: 5}
+      client = new Client email: 'foo@example.com', token: 'bob', requestOptions: {timeout: 5, maxAttempts: 1}
 
     afterEach ->
       nock.cleanAll()
@@ -58,6 +57,27 @@ describe 'Client', ->
         client.send {gauges: [{name: 'foo', value: 1}]}, (err) ->
           expect(err.code).to.equal 'ESOCKETTIMEDOUT'
           done()
+
+  describe 'with 500 from librato', ->
+    beforeEach ->
+      nock('https://metrics-api.librato.com/v1')
+        .post('/metrics')
+        .basicAuth(user: 'foo@example.com', pass: 'bob')
+        .reply(504)
+
+      nock('https://metrics-api.librato.com/v1')
+        .post('/metrics')
+        .basicAuth(user: 'foo@example.com', pass: 'bob')
+        .reply(200)
+
+      client = new Client email: 'foo@example.com', token: 'bob'
+
+    afterEach ->
+      nock.cleanAll()
+
+    describe '::send', ->
+      it 'retries and succeeds on the second attempt', (done) ->
+        client.send {gauges: [{name: 'foo', value: 1}]}, done
 
   describe 'in simulate mode', ->
 
