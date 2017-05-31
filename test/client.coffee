@@ -6,7 +6,7 @@ describe 'Client', ->
   {client} = {}
 
   describe 'with email and token', ->
-  
+
     beforeEach ->
       nock('https://metrics-api.librato.com/v1')
         .post('/metrics')
@@ -17,13 +17,13 @@ describe 'Client', ->
 
     afterEach ->
       nock.cleanAll()
-      
+
     describe '::send', ->
       it 'sends data to Librato', (done) ->
         client.send {gauges: [{name: 'foo', value: 1}]}, done
 
   describe 'Librato returns a 400', ->
-  
+
     beforeEach ->
       nock('https://metrics-api.librato.com/v1')
         .post('/metrics')
@@ -33,7 +33,7 @@ describe 'Client', ->
 
     afterEach ->
       nock.cleanAll()
-      
+
     describe '::send', ->
       it 'throws an error with the response body', (done) ->
         client.send {gauges: [{name: '', value: 1}]}, (err) ->
@@ -41,29 +41,29 @@ describe 'Client', ->
           done()
 
   describe 'with timeout via requestOptions', ->
-  
+
     beforeEach ->
       nock('https://metrics-api.librato.com/v1')
         .post('/metrics')
         .basicAuth(user: 'foo@example.com', pass: 'bob')
-        .delayConnection(10)
+        .socketDelay(10)
         .reply(200)
       client = new Client email: 'foo@example.com', token: 'bob', requestOptions: {timeout: 5}
 
     afterEach ->
       nock.cleanAll()
-      
+
     describe '::send', ->
       it 'throws timeout error', (done) ->
         client.send {gauges: [{name: 'foo', value: 1}]}, (err) ->
-          expect(err.code).to.equal 'ETIMEDOUT'
+          expect(err.code).to.equal 'ESOCKETTIMEDOUT'
           done()
 
   describe 'in simulate mode', ->
-  
+
     beforeEach ->
       client = new Client simulate: true
-      
+
     describe '::send', ->
       it 'sends data to Librato', (done) ->
         client.send {gauges: [{name: 'foo', value: 1}]}, done
