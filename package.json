@@ -30,5 +30,8 @@
   "scripts": {
     "pretest": "./node_modules/.bin/coffee -c -m -o lib src",
     "test": "./node_modules/.bin/mocha"
+  },
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org"
   }
 }
