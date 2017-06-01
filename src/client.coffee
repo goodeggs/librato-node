@@ -19,7 +19,7 @@ class Client
         delayStrategy: -> (2 ^ this.attempts) * (this.retryDelay / 2)
       @_requestOptions.headers = _.defaults @_requestOptions.headers,
         authorization: 'Basic ' + new Buffer("#{email}:#{token}").toString('base64')
-        'user-agent': "librato-node/#{packageJson.version}"
+        'user-agent': "librato-rack/0.4.5 (compatible; librato-node/#{packageJson.version})"
 
   send: (json, cb) ->
     return process.nextTick(cb) unless @_requestOptions?
