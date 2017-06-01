@@ -116,11 +116,20 @@ var librato = require('librato-node');
 librato.configure({email: 'foo@bar.com', token: 'ABC123', period: 5000})
 ```
 
-You can pass additional options (such as `timeout`) for the HTTP POST to Librato using the `requestOptions` parameter.  See [request/request](https://github.com/request/request) for a complete list of options.
+### Request Options
+
+You can pass additional options for the HTTP POST to Librato using the `requestOptions` parameter.  See [request/request](https://github.com/request/request) for a complete list of options. For example, to configure a timeout:
 
 ```javascript
 var librato = require('librato-node');
 librato.configure({email: 'foo@bar.com', token: 'ABC123', requestOptions: {timeout: 250}})
+```
+
+By default librato-node will retry up to 3 times on connection failures and 5xx responses using an exponential backoff strategy with a 100ms base. These defaults can be overridden using the `requestOptions` paramter. See [requestretry](https://github.com/FGRibreau/node-request-retry) for a list of options. For example, to limit to a single attempt:
+
+```javascript
+var librato = require('librato-node');
+librato.configure({email: 'foo@bar.com', token: 'ABC123', requestOptions: {maxAttempts: 1}})
 ```
 
 ------
