@@ -125,10 +125,7 @@ var librato = require('librato-node');
 librato.configure({email: 'foo@bar.com', token: 'ABC123', requestOptions: {timeout: 250}})
 ```
 
-By default librato-node will retry up to 3 times on network failures using an exponential backoff strategy
-with a 100ms base. These defaults can also be overriden
-using the `requestOptions` paramter. See [requestretry](https://github.com/FGRibreau/node-request-retry) for a list of options. For example, to limit to
-a slingle attempt:
+By default librato-node will retry up to 3 times on network failures using an exponential backoff strategy with a 100ms base. These defaults can also be overriden using the `requestOptions` paramter. See [requestretry](https://github.com/FGRibreau/node-request-retry) for a list of options. For example, to limit to a single attempt:
 
 ```javascript
 var librato = require('librato-node');
