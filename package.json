@@ -14,7 +14,7 @@
     "express"
   ],
   "dependencies": {
-    "lodash": "^3.6.0",
+    "lodash": "^4.17.11",
     "requestretry": "^1.12.0"
   },
   "devDependencies": {
