@@ -22,7 +22,7 @@
     "coffee-script": "^1.8.0",
     "mocha": "^2.0.1",
     "mocha-sinon": "^1.1.4",
-    "nock": "^1.6.0",
+    "nock": "^9.6.1",
     "sinon": "^1.12.2",
     "sinon-chai": "^2.7.0",
     "source-map-support": "^0.2.8"
