@@ -21,6 +21,7 @@ describe 'Client', ->
     describe '::send', ->
       it 'sends data to Librato', (done) ->
         client.send {gauges: [{name: 'foo', value: 1}]}, done
+        null
 
   describe 'Librato returns a 400', ->
 
@@ -39,6 +40,7 @@ describe 'Client', ->
         client.send {gauges: [{name: '', value: 1}]}, (err) ->
           expect(err.message).to.equal "Error sending to Librato: { errors: { params: { name: [ 'is not present' ] } } } (statusCode: 400)"
           done()
+        null
 
   describe 'with timeout via requestOptions', ->
     beforeEach ->
@@ -57,6 +59,7 @@ describe 'Client', ->
         client.send {gauges: [{name: 'foo', value: 1}]}, (err) ->
           expect(err.code).to.equal 'ESOCKETTIMEDOUT'
           done()
+        null
 
   describe 'with 500 from librato', ->
     beforeEach ->
@@ -78,6 +81,7 @@ describe 'Client', ->
     describe '::send', ->
       it 'retries and succeeds on the second attempt', (done) ->
         client.send {gauges: [{name: 'foo', value: 1}]}, done
+        null
 
   describe 'in simulate mode', ->
 
@@ -87,4 +91,5 @@ describe 'Client', ->
     describe '::send', ->
       it 'sends data to Librato', (done) ->
         client.send {gauges: [{name: 'foo', value: 1}]}, done
+        null
 
