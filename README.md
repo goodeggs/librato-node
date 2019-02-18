@@ -144,6 +144,15 @@ yarn install
 yarn test
 ```
 
+## Deploying a new version
+
+This module is automatically deployed when a version tag bump is detected by travis.
+Remember to update the [changelog](CHANGELOG.md)!
+
+```
+yarn version
+```
+
 ------
 
 ## History

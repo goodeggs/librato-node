@@ -28,6 +28,11 @@
     "source-map-support": "^0.2.8"
   },
   "scripts": {
+    "build": "yarn run build:clean && yarn run build:transpile",
+    "build:clean": "rm -rf lib",
+    "build:transpile": "yarn run coffee -c -m -o lib src",
+    "prepublishOnly": "yarn run build",
+    "postversion": "git push --follow-tags",
     "pretest": "yarn run build",
     "test": "NODE_ENV=test yarn run mocha --opts mocha.opts test/*.coffee"
   },
