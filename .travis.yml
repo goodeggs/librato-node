@@ -1,6 +1,26 @@
+dist: trusty
 language: node_js
 node_js:
-  - "4"
-  - "8"
-  - "lts/*"
-  - "node"
+  - "8.11.4"
+  - "10.14.1"
+env:
+  global:
+  - PATH="/tmp/ci-tools:./node_modules/.bin/:$PATH"
+  - secure: N9i6HZapSeVOt0Rx0cCCLMia76R7MB+aFYIEbWN5QqjqVA5MmkKGKWGXb9YRep2zVMjVaDCa6pSMrd5RiF7I/NgYaroFPpFhQUp1VyXiIhkEXucExjz+/1aaDzf+GK9Nql755bJ79vzE9vQ41l46B22twLdEDnj2VE3XOCqYPFU= # NPM_AUTH
+cache:
+  yarn: true
+  directories:
+  - "/tmp/ci-tools"
+before_install:
+- curl -sSL https://github.com/goodeggs/travis-utils/raw/master/install-ci-tools.sh
+  | CACHE_DIR=/tmp/ci-tools sh -s -- yarn=1.9.4
+install: yarn install
+script: yarn run test
+deploy:
+  provider: script
+  script: yarn publish
+  skip_cleanup: true
+  on:
+    tags: true
+    branch: master
+    node: "8.11.4"

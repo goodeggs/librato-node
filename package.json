@@ -13,13 +13,17 @@
     "metrics",
     "express"
   ],
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org/",
+    "always-auth": true
+  },
   "dependencies": {
     "lodash": "^4.17.11",
     "requestretry": "^1.12.0"
   },
   "devDependencies": {
     "chai": "^2.3.0",
-    "coffee-script": "^1.8.0",
+    "coffeescript": "^1.8.0",
     "mocha": "^5.2.0",
     "mocha-sinon": "^1.1.4",
     "nock": "^9.6.1",
@@ -28,10 +32,12 @@
     "source-map-support": "^0.2.8"
   },
   "scripts": {
-    "pretest": "./node_modules/.bin/coffee -c -m -o lib src",
-    "test": "./node_modules/.bin/mocha"
-  },
-  "publishConfig": {
-    "registry": "https://registry.npmjs.org"
+    "build": "yarn run build:clean && yarn run build:transpile",
+    "build:clean": "rm -rf lib",
+    "build:transpile": "yarn run coffee -c -m -o lib src",
+    "prepublishOnly": "yarn run build",
+    "postversion": "git push --follow-tags",
+    "pretest": "yarn run build",
+    "test": "NODE_ENV=test yarn run mocha --opts mocha.opts test/*.coffee"
   }
 }
