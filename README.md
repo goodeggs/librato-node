@@ -10,8 +10,9 @@ librato-node is a Node.js client for Librato Metrics (http://metrics.librato.com
 ## Getting Started
 
 ### Install
-
-    $ npm install librato-node
+```
+yarn add librato-node
+```
 
 ### Setup
 
@@ -139,9 +140,8 @@ Please follow our [Code of Conduct](CODE_OF_CONDUCT.md)
 when contributing to this project.
 
 ```
-$ git clone https://github.com/goodeggs/librato-node && cd librato-node
-$ npm install
-$ npm test
+yarn install
+yarn test
 ```
 
 ------

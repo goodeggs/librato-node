@@ -28,8 +28,8 @@
     "source-map-support": "^0.2.8"
   },
   "scripts": {
-    "pretest": "./node_modules/.bin/coffee -c -m -o lib src",
-    "test": "./node_modules/.bin/mocha"
+    "pretest": "yarn run build",
+    "test": "NODE_ENV=test yarn run mocha test/*.coffee"
   },
   "publishConfig": {
     "registry": "https://registry.npmjs.org"
