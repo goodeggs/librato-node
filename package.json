@@ -29,7 +29,7 @@
   },
   "scripts": {
     "pretest": "yarn run build",
-    "test": "NODE_ENV=test yarn run mocha test/*.coffee"
+    "test": "NODE_ENV=test yarn run mocha --opts mocha.opts test/*.coffee"
   },
   "publishConfig": {
     "registry": "https://registry.npmjs.org"
