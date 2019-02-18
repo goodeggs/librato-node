@@ -1,5 +1,23 @@
 # Change Log
 
+- [Changes since last deploy](https://github.com/goodeggs/librato-node/compare/v5.0.3...master)
+
+# [v5.0.3](https://github.com/goodeggs/librato-node/compare/v5.0.2...v5.0.3)
+
+- Update dependencies
+  - lodash
+  - noc
+- Deploy from Travis
+- Use yarn
+
+# [v5.0.2](https://github.com/goodeggs/librato-node/compare/v4.1.0...v5.0.2)
+
+- Support retries communicating with Librato
+
+# [v4.1.0](https://github.com/goodeggs/librato-node/compare/v4.0.0...v4.1.0)
+
+- Efficiently calculate aggregates on each new measurement
+
 ## [v4.0.0](https://github.com/goodeggs/librato-node/tree/v4.0.0) (2015-05-05)
 
 [Full Changelog](https://github.com/goodeggs/librato-node/compare/v3.0.0...v4.0.0)
