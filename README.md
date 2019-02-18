@@ -6,7 +6,6 @@ librato-node is a Node.js client for Librato Metrics (http://metrics.librato.com
 [![build status][travis-badge]][travis-link]
 [![npm version][npm-badge]][npm-link]
 [![mit license][license-badge]][license-link]
-[![we're hiring][hiring-badge]][hiring-link]
 
 ## Getting Started
 
@@ -160,5 +159,3 @@ librato-node is largely based off of Librato's own [librato-rack](https://github
 [npm-link]: https://www.npmjs.org/package/librato-node
 [license-badge]: http://img.shields.io/badge/license-mit-blue.svg?style=flat-square
 [license-link]: LICENSE.md
-[hiring-badge]: https://img.shields.io/badge/we're_hiring-yes-brightgreen.svg?style=flat-square
-[hiring-link]: http://goodeggs.jobscore.com/?detail=Open+Source&sid=161
