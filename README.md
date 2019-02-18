@@ -135,6 +135,9 @@ librato.configure({email: 'foo@bar.com', token: 'ABC123', requestOptions: {maxAt
 
 ## Contributing
 
+Please follow our [Code of Conduct](CODE_OF_CONDUCT.md)
+when contributing to this project.
+
 ```
 $ git clone https://github.com/goodeggs/librato-node && cd librato-node
 $ npm install
