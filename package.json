@@ -6,7 +6,7 @@
   "main": "lib/librato",
   "repository": {
     "type": "git",
-    "url": "git://github.com/goodeggs/librato-node.git"
+    "url": "git://github.com/pendo-io/librato-node.git"
   },
   "keywords": [
     "librato",
