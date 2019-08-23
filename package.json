@@ -14,7 +14,7 @@
     "express"
   ],
   "publishConfig": {
-    "registry": "https://registry.npmjs.org/",
+    "registry": "https://api.bintray.com/npm/pendo/web/",
     "always-auth": true
   },
   "dependencies": {
