@@ -3,8 +3,6 @@ librato-node
 
 librato-node is a Node.js client for Librato Metrics (http://metrics.librato.com/)
 
-[![build status][travis-badge]][travis-link]
-[![npm version][npm-badge]][npm-link]
 [![mit license][license-badge]][license-link]
 
 ## Getting Started
@@ -144,15 +142,6 @@ yarn install
 yarn test
 ```
 
-## Deploying a new version
-
-This module is automatically deployed when a version tag bump is detected by travis.
-Remember to update the [changelog](CHANGELOG.md)!
-
-```
-yarn version
-```
-
 ------
 
 ## History
@@ -165,9 +154,5 @@ librato-node is largely based off of Librato's own [librato-rack](https://github
 
 [MIT][license-link]
 
-[travis-badge]: http://img.shields.io/travis/goodeggs/librato-node/master.svg?style=flat-square
-[travis-link]: https://travis-ci.org/goodeggs/librato-node
-[npm-badge]: http://img.shields.io/npm/v/librato-node.svg?style=flat-square
-[npm-link]: https://www.npmjs.org/package/librato-node
 [license-badge]: http://img.shields.io/badge/license-mit-blue.svg?style=flat-square
 [license-link]: LICENSE.md
