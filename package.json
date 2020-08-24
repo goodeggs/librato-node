@@ -22,13 +22,13 @@
     "requestretry": "^1.12.0"
   },
   "devDependencies": {
-    "chai": "^2.3.0",
+    "chai": "^4.2.0",
     "coffeescript": "^1.8.0",
-    "mocha": "^5.2.0",
-    "mocha-sinon": "^1.1.4",
+    "mocha": "7",
+    "mocha-sinon": "^2.1.2",
     "nock": "^9.6.1",
-    "sinon": "^1.12.2",
-    "sinon-chai": "^2.7.0",
+    "sinon": "^9.0.3",
+    "sinon-chai": "^3.5.0",
     "source-map-support": "^0.2.8"
   },
   "scripts": {

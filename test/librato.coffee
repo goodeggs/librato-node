@@ -62,9 +62,10 @@ describe 'librato', ->
 
     describe 'with a full queue', ->
       beforeEach ->
-        @sinon.stub Collector::, 'flushTo', (gauges, counters) ->
+        @sinon.stub(Collector::, 'flushTo').callsFake((gauges, counters) ->
           gauges.push {name: 'foo', value: 1}
           counters.push {name: 'bar', value: 1}
+        )
 
       it 'sends data to Librato', ->
         librato.flush()
