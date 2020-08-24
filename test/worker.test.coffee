@@ -9,6 +9,56 @@ givenPeriod = (period) ->
    }
 
 describe 'Worker', ->
+  describe 'constructor', ->
+    it 'sets `@period` to given `period` if defined', ->
+      expect(
+        new Worker({period: 15000, job: @sinon.stub()})
+      ).to.have.property('period', 15000)
+
+    it 'sets `@period` to default of 60000 if none given', ->
+      expect(
+        new Worker({job: @sinon.stub()})
+      ).to.have.property('period', 60000)
+
+  describe '.start', ->
+    {clock} = {}
+
+    beforeEach ->
+      clock = @sinon.useFakeTimers(0)
+
+    it 'calls given `job` once first given `period` has passed', ->
+      job = @sinon.stub()
+      worker = new Worker({job, period: 15000})
+
+      worker.start()
+      expect(job).not.to.have.been.called
+      clock.tick(14999)
+      expect(job).not.to.have.been.called
+      clock.tick(2)
+      expect(job).to.have.been.calledOnce
+
+    it 'calls given `job` a second time one `period` after the first call', ->
+      job = @sinon.stub()
+      worker = new Worker({job, period: 15000})
+
+      worker.start()
+      clock.tick(15006)
+      job.reset()
+
+      clock.tick(15000)
+      expect(job).to.have.been.calledOnce
+
+    it 'sleeps until start of the next period if less than a period has elapsed since last call to `job`', ->
+      job = @sinon.stub()
+      worker = new Worker({job, period: 15000})
+
+      worker.start()
+      clock.tick(45000)
+      job.reset()
+
+      clock.tick(14900)
+      expect(job).not.to.have.been.called
+      expect(clock.countTimers()).to.equal(1)
 
   describe '.startTime', ->
     {clock, period} = {}
