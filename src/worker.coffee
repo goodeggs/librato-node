@@ -16,7 +16,9 @@ class Worker
           @job()
           nextRun += @period while nextRun <= now
         else
-          return (@timerId = setTimeout workFn, (nextRun - now))
+          # Handle funky clock time changes gracefully by avoiding overflowing the timeout arg
+          @timerId = setTimeout(workFn, Math.min(nextRun - now, @period))
+          return
     workFn()
 
   stop: ->

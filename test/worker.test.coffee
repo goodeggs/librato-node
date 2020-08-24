@@ -60,6 +60,29 @@ describe 'Worker', ->
       expect(job).not.to.have.been.called
       expect(clock.countTimers()).to.equal(1)
 
+    it 'sleeps at most for one whole period', ->
+      job = @sinon.stub()
+      worker = new Worker({job, period: 15000})
+
+      clock.setSystemTime(new Date('2020-01-01T00:00:00.000Z').valueOf())
+      worker.start()
+      clock.tick(45000)
+      clock.runToLast()
+      job.reset()
+
+      # rewind clock time by 10 years
+      clock.setSystemTime(new Date('2010-01-01T00:00:00.000Z').valueOf())
+      clock.runToLast()
+      expect(job).not.to.have.been.called
+      expect(clock.countTimers()).to.equal(1)
+
+      # verify that next check is scheduled for one period later, even though we time traveled
+      clock.tick(15000)
+      expect(clock.countTimers()).to.equal(1)
+      now = Date.now()
+      clock.next()
+      expect(Date.now() - now).to.equal(15000)
+
   describe '.startTime', ->
     {clock, period} = {}
 
