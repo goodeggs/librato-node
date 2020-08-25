@@ -17,10 +17,12 @@ before_install:
 install: yarn install
 script: yarn run test
 deploy:
-  provider: script
-  script: yarn publish
+  provider: npm
+  email: open-source@goodeggs.com
+  api_token:
+    secure: "q4MMnH0AF/vRXsJH3rNJ7U//D5HEVN8LI23FCTlrn5/B1G2BCNcAUCUreLih17JpjayP06ggAyu1Tu3GoFfnFCjD/Y9iWU1HN5evTF9vHOH/RIFXCwkPr+pw0zrfuVKa3zUlcMZ90YH7c6LKXmNWMWtmqwEo6j8ysdYStLe0ytw="
   skip_cleanup: true
   on:
     tags: true
-    branch: master
+    all_branches: true
     node: "8.11.4"

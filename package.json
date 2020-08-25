@@ -15,7 +15,7 @@
   ],
   "publishConfig": {
     "registry": "https://registry.npmjs.org/",
-    "always-auth": true
+    "access": "public"
   },
   "dependencies": {
     "lodash": "^4.17.11",
