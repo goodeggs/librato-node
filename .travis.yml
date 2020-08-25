@@ -6,7 +6,6 @@ node_js:
 env:
   global:
   - PATH="/tmp/ci-tools:./node_modules/.bin/:$PATH"
-  - secure: N9i6HZapSeVOt0Rx0cCCLMia76R7MB+aFYIEbWN5QqjqVA5MmkKGKWGXb9YRep2zVMjVaDCa6pSMrd5RiF7I/NgYaroFPpFhQUp1VyXiIhkEXucExjz+/1aaDzf+GK9Nql755bJ79vzE9vQ41l46B22twLdEDnj2VE3XOCqYPFU= # NPM_AUTH
 cache:
   yarn: true
   directories:
@@ -17,10 +16,12 @@ before_install:
 install: yarn install
 script: yarn run test
 deploy:
-  provider: script
-  script: yarn publish
+  provider: npm
+  email: open-source@goodeggs.com
+  api_token:
+    secure: "q4MMnH0AF/vRXsJH3rNJ7U//D5HEVN8LI23FCTlrn5/B1G2BCNcAUCUreLih17JpjayP06ggAyu1Tu3GoFfnFCjD/Y9iWU1HN5evTF9vHOH/RIFXCwkPr+pw0zrfuVKa3zUlcMZ90YH7c6LKXmNWMWtmqwEo6j8ysdYStLe0ytw="
   skip_cleanup: true
   on:
     tags: true
-    branch: master
+    all_branches: true
     node: "8.11.4"

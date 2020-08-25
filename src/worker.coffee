@@ -1,9 +1,7 @@
-
 class Worker
-
   period: 60000
 
-  constructor: ({@job, period}={}) ->
+  constructor: ({@job, period} = {}) ->
     throw new Error('must provide job') unless @job?
     @period = period if period?
     @stopped = true
@@ -18,7 +16,9 @@ class Worker
           @job()
           nextRun += @period while nextRun <= now
         else
-          return (@timerId = setTimeout workFn, (nextRun - now))
+          # Handle funky clock time changes gracefully by avoiding overflowing the timeout arg
+          @timerId = setTimeout(workFn, Math.min(nextRun - now, @period))
+          return
     workFn()
 
   stop: ->
