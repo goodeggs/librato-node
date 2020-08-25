@@ -6,7 +6,6 @@ node_js:
 env:
   global:
   - PATH="/tmp/ci-tools:./node_modules/.bin/:$PATH"
-  - secure: N9i6HZapSeVOt0Rx0cCCLMia76R7MB+aFYIEbWN5QqjqVA5MmkKGKWGXb9YRep2zVMjVaDCa6pSMrd5RiF7I/NgYaroFPpFhQUp1VyXiIhkEXucExjz+/1aaDzf+GK9Nql755bJ79vzE9vQ41l46B22twLdEDnj2VE3XOCqYPFU= # NPM_AUTH
 cache:
   yarn: true
   directories:
