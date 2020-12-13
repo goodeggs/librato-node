@@ -16,7 +16,7 @@ class Client
         headers: {}
         maxAttempts: 3
         retryDelay: 100
-        delayStrategy: -> (2 ^ this.attempts) * (this.retryDelay / 2)
+        delayStrategy: -> Math.pow(2, this.attempts) * (this.retryDelay / 2)
       @_requestOptions.headers = _.defaults @_requestOptions.headers,
         authorization: 'Basic ' + new Buffer("#{email}:#{token}").toString('base64')
         'user-agent': "librato-node/#{packageJson.version}"
